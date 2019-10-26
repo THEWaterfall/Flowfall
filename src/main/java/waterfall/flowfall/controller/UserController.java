@@ -8,6 +8,7 @@ import waterfall.flowfall.model.User;
 import waterfall.flowfall.service.UserService;
 
 @RestController
+@CrossOrigin(value="*", maxAge = 3600)
 public class UserController {
 
     private UserService userService;

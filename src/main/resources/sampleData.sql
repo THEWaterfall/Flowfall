@@ -4,7 +4,8 @@ insert into role(name) values ('USER');
 
 insert into user_profile(firstname, lastname) values('Andrew', 'Waterfall');
 
-insert into user(email, password, user_profile_id) values('awaterfall@gmail.com', 'password', 1);
+# Password: password
+insert into user(email, password, user_profile_id) values('awaterfall@gmail.com', '$2a$10$gGuR8iONHEnagJboVVUSyeDM6c5YtvGmxKd4sqvOQrguahKrQK/FK', 1);
 
 insert into user_role(user_id, role_id) values(1, 1);
 
