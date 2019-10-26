@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import waterfall.flowfall.model.UserProfile;
 
 @Repository
-public abstract class UserProfileRepository implements CrudRepository<UserProfile, Long> {
+public interface UserProfileRepository extends CrudRepository<UserProfile, Long> {
 
 }
