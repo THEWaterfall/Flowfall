@@ -37,4 +37,9 @@ public class BoardServiceImpl implements BoardService {
     public void delete(Board board) {
         boardRepository.delete(board);
     }
+
+    @Override
+    public Iterable<Board> findAllByUserId(Long id) {
+        return boardRepository.findAllByUserId(id);
+    }
 }

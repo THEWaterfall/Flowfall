@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface BoardService {
     Iterable<Board> findAll();
+    Iterable<Board> findAllByUserId(Long id);
+
     Optional<Board> findById(Long id);
 
     Board save(Board board);

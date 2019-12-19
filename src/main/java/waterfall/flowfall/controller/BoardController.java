@@ -8,6 +8,7 @@ import waterfall.flowfall.model.Board;
 import waterfall.flowfall.service.BoardService;
 
 @RestController
+@CrossOrigin(value="*", maxAge = 3600)
 public class BoardController {
 
     private BoardService boardService;
@@ -20,6 +21,11 @@ public class BoardController {
     @GetMapping(value = "/boards")
     public ResponseEntity getBoards() {
         return new ResponseEntity(boardService.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/boards/u/{id}")
+    public ResponseEntity getBoardsByUserId(@PathVariable Long id) {
+        return new ResponseEntity(boardService.findAllByUserId(id), HttpStatus.OK);
     }
 
     @GetMapping(value = "/boards/{id}")
