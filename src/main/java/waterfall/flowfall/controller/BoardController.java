@@ -46,15 +46,7 @@ public class BoardController {
 
     @PutMapping(value = "/boards")
     public ResponseEntity<Board> updateBoard(@RequestBody Board board) {
-        return boardService.findById(board.getId())
-                .map(storedBoard -> {
-                    storedBoard.setName(board.getName());
-                    storedBoard.setBoardColumns(board.getBoardColumns());
-                    boardService.save(storedBoard);
-
-                    return new ResponseEntity<>(sortByIndex(storedBoard), HttpStatus.OK);
-                })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return new ResponseEntity<>(boardService.save(board), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/boards/{id}")
