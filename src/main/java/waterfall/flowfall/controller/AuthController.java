@@ -6,18 +6,16 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import waterfall.flowfall.model.User;
+import waterfall.flowfall.security.UserPrinciple;
 import waterfall.flowfall.security.jwt.JwtProvider;
 import waterfall.flowfall.security.jwt.JwtResponse;
 
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
+@CrossOrigin(value="*", maxAge = 3600)
 @RequestMapping(value = "/auth")
 public class AuthController {
 
@@ -36,8 +34,8 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtProvider.generateJwtToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
 
-        return ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+        return ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getId(), userDetails.getAuthorities()));
     }
 }

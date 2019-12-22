@@ -14,17 +14,23 @@ public class UserPrinciple implements UserDetails {
 
     private String email;
     private String password;
+    private Long id;
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrinciple(String email, String password, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrinciple(String email, String password, Long id, Collection<? extends GrantedAuthority> authorities) {
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.id = id;
     }
 
     public static UserPrinciple build(User user) {
-        return new UserPrinciple(user.getEmail(), user.getPassword(), parseAuthorities(user.getRoles()));
+        return new UserPrinciple(user.getEmail(), user.getPassword(), user.getId(), parseAuthorities(user.getRoles()));
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
