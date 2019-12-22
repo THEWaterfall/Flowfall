@@ -46,7 +46,7 @@ public class BoardController {
 
     @PutMapping(value = "/boards")
     public ResponseEntity<Board> updateBoard(@RequestBody Board board) {
-        return new ResponseEntity<>(boardService.save(board), HttpStatus.OK);
+        return new ResponseEntity<>(boardService.update(board), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/boards/{id}")

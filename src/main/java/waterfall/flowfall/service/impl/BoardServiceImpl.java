@@ -30,6 +30,11 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board save(Board board) {
+        return boardRepository.save(board);
+    }
+
+    @Override
+    public Board update(Board board) {
         return boardRepository.findById(board.getId())
                 .map(storedBoard -> {
                     storedBoard.setName(board.getName());
