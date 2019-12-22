@@ -27,4 +27,14 @@ public class BoardColumnController {
     public ResponseEntity<BoardColumn> addColumn(@RequestBody BoardColumn boardColumn) {
         return new ResponseEntity<>(boardColumnService.save(boardColumn), HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/rows/{id}")
+    public ResponseEntity<Void> deleteRow(@PathVariable Long id) {
+        return boardColumnService.findById(id)
+                .map(boardColumn -> {
+                    boardColumnService.delete(boardColumn);
+                    return new ResponseEntity<Void>(HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }
