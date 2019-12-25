@@ -3,6 +3,8 @@ package waterfall.flowfall.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import waterfall.flowfall.model.Board;
 import waterfall.flowfall.model.BoardColumn;
@@ -22,16 +24,19 @@ public class BoardController {
         this.boardService = boardService;
     }
 
+    @PostAuthorize("@boardPermissions.isOwner(returnObject.getBody())")
     @GetMapping(value = "/boards")
     public ResponseEntity getBoards() {
         return new ResponseEntity(boardService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value="/boards/u/{id}")
+    @PostAuthorize("@boardPermissions.isOwner(returnObject.getBody())")
+    @GetMapping(value = "/boards/u/{id}")
     public ResponseEntity getBoardsByUserId(@PathVariable Long id) {
         return new ResponseEntity(boardService.findAllByUserId(id), HttpStatus.OK);
     }
 
+    @PostAuthorize("@boardPermissions.isOwner(returnObject.getBody())")
     @GetMapping(value = "/boards/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
         return boardService.findById(id)
@@ -44,6 +49,7 @@ public class BoardController {
         return new ResponseEntity<>(boardService.save(board), HttpStatus.OK);
     }
 
+    @PreAuthorize("@boardPermissions.isOwner(#board)")
     @PutMapping(value = "/boards")
     public ResponseEntity<Board> updateBoard(@RequestBody Board board) {
         return new ResponseEntity<>(boardService.update(board), HttpStatus.OK);
