@@ -28,7 +28,10 @@ public class BoardPermissions extends Permissions<Board> {
     @Override
     public boolean isOwner(Board targetObject) {
         boolean hasPermission = false;
-        if(targetObject != null) {
+    
+        if(targetObject.getUser() == null) {
+            hasPermission = isOwner(targetObject.getId());
+        } else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             hasPermission = authentication.getPrincipal().equals(targetObject.getUser().getEmail());
         }

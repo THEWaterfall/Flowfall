@@ -55,7 +55,7 @@ public class BoardController {
         return new ResponseEntity<>(boardService.save(board), HttpStatus.OK);
     }
 
-    @PreAuthorize("@boardPermissions.isOwner(#board)")
+    @PreAuthorize("@boardPermissions.hasRights(#board)")
     @PutMapping(value = "/boards")
     public ResponseEntity<Board> updateBoard(@RequestBody Board board) {
         return new ResponseEntity<>(boardService.update(board), HttpStatus.OK);
