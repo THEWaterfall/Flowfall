@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface BoardService {
     Iterable<Board> findAll();
     Iterable<Board> findAllByUserId(Long id);
+    Iterable<Board> findAllCollabBoardsByUserId(Long id);
 
     Optional<Board> findById(Long id);
 

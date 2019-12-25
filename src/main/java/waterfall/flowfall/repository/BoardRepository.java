@@ -9,4 +9,7 @@ import waterfall.flowfall.model.Board;
 public interface BoardRepository extends CrudRepository<Board, Long> {
     @Query("FROM Board b WHERE b.user.id = :id")
     Iterable<Board> findAllByUserId(Long id);
+
+    @Query("FROM Board b JOIN b.collaborators collabs WHERE collabs.id = :id")
+    Iterable<Board> findAllCollabBoardsByUserId(Long id);
 }

@@ -54,4 +54,9 @@ public class BoardServiceImpl implements BoardService {
     public Iterable<Board> findAllByUserId(Long id) {
         return boardRepository.findAllByUserId(id);
     }
+
+    @Override
+    public Iterable<Board> findAllCollabBoardsByUserId(Long id) {
+        return boardRepository.findAllCollabBoardsByUserId(id);
+    }
 }

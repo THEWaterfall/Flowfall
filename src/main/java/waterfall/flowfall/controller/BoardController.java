@@ -37,6 +37,12 @@ public class BoardController {
     }
 
     @PostAuthorize("@boardPermissions.hasRights(returnObject.getBody())")
+    @GetMapping(value = "/boards/u/{id}/collab")
+    public ResponseEntity getBoardsByCollaborator(@PathVariable Long id) {
+        return new ResponseEntity(boardService.findAllCollabBoardsByUserId(id), HttpStatus.OK);
+    }
+
+    @PostAuthorize("@boardPermissions.hasRights(returnObject.getBody())")
     @GetMapping(value = "/boards/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
         return boardService.findById(id)
