@@ -24,19 +24,19 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @PostAuthorize("@boardPermissions.isOwner(returnObject.getBody())")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/boards")
     public ResponseEntity getBoards() {
         return new ResponseEntity(boardService.findAll(), HttpStatus.OK);
     }
 
-    @PostAuthorize("@boardPermissions.isOwner(returnObject.getBody())")
+    @PostAuthorize("@boardPermissions.hasRights(returnObject.getBody())")
     @GetMapping(value = "/boards/u/{id}")
     public ResponseEntity getBoardsByUserId(@PathVariable Long id) {
         return new ResponseEntity(boardService.findAllByUserId(id), HttpStatus.OK);
     }
 
-    @PostAuthorize("@boardPermissions.isOwner(returnObject.getBody())")
+    @PostAuthorize("@boardPermissions.hasRights(returnObject.getBody())")
     @GetMapping(value = "/boards/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
         return boardService.findById(id)
@@ -55,6 +55,7 @@ public class BoardController {
         return new ResponseEntity<>(boardService.update(board), HttpStatus.OK);
     }
 
+    @PreAuthorize("@boardPermissions.isOwner(#id)")
     @DeleteMapping(value = "/boards/{id}")
     public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
         return boardService.findById(id)
