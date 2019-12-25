@@ -35,6 +35,8 @@ public class BoardColumnServiceImpl implements BoardColumnService {
                     storedBoardColumn.setIndex(boardColumn.getIndex());
                     storedBoardColumn.setName(boardColumn.getName());
                     storedBoardColumn.setRows(boardColumn.getRows());
+                    storedBoardColumn.setBoard(boardColumn.getBoard());
+
                     return boardColumnRepository.save(storedBoardColumn);
                 }).orElse(null);
     }

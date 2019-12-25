@@ -1,6 +1,7 @@
 package waterfall.flowfall.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -62,6 +63,7 @@ public class Board {
         return collaborators;
     }
 
+    @JsonIgnore
     public Set<String> getCollaboratorsNames() {
         Set<String> names = new HashSet<>();
         for(User user: collaborators) {
@@ -73,6 +75,14 @@ public class Board {
 
     public void setCollaborators(Set<User> collaborators) {
         this.collaborators = collaborators;
+    }
+
+    public void addCollaborator(User collaborator) {
+        if(this.collaborators == null) {
+            this.collaborators = new HashSet<>();
+        }
+
+        this.collaborators.add(collaborator);
     }
 
     public List<BoardColumn> getBoardColumns() {

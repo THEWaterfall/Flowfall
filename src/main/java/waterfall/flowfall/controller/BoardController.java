@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import waterfall.flowfall.model.Board;
 import waterfall.flowfall.model.BoardColumn;
 import waterfall.flowfall.model.Row;
+import waterfall.flowfall.model.User;
 import waterfall.flowfall.service.BoardService;
+import waterfall.flowfall.service.UserService;
 
 import java.util.Comparator;
 
@@ -18,10 +20,12 @@ import java.util.Comparator;
 public class BoardController {
 
     private BoardService boardService;
+    private UserService userService;
 
     @Autowired
-    public BoardController(BoardService boardService) {
+    public BoardController(BoardService boardService, UserService userService) {
         this.boardService = boardService;
+        this.userService = userService;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -70,6 +74,28 @@ public class BoardController {
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PreAuthorize("@boardPermissions.isOwner(#id)")
+    @PostMapping(value = "/boards/{id}/invite")
+    public ResponseEntity<Void> inviteCollaborator(@PathVariable Long id, @RequestParam String collabEmail) {
+        return boardService.findById(id)
+                .map(board -> {
+                    User user = userService.findByEmail(collabEmail).orElse(null);
+                    if (user == null) {
+                        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+                    }
+
+                    if(board.getCollaborators().contains(user)) {
+                        return new ResponseEntity<Void>(HttpStatus.OK);
+                    }
+
+                    board.addCollaborator(user);
+                    boardService.update(board);
+
+                    return new ResponseEntity<Void>(HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
     }
 
     private Board sortByIndex(Board board) {

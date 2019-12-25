@@ -68,4 +68,17 @@ public class BoardPermissions extends Permissions<Board> {
 
         return hasPermission;
     }
+
+    @Override
+    public boolean isCollaborator(List<Board> targetObjects) {
+        boolean hasPermission = false;
+        if(targetObjects != null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            for(Board board: targetObjects) {
+                hasPermission = board.getCollaboratorsNames().contains(authentication.getPrincipal());
+            }
+        }
+
+        return hasPermission;
+    }
 }

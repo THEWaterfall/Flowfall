@@ -21,7 +21,7 @@ public abstract class Permissions<T> {
     }
 
     public boolean hasRights(List<T> targetObjects) {
-        return isAdmin() || isOwner(targetObjects);
+        return isAdmin() || isOwner(targetObjects) || isCollaborator(targetObjects);
     }
 
     public abstract boolean isOwner(Long targetId);
@@ -29,4 +29,5 @@ public abstract class Permissions<T> {
     public abstract boolean isOwner(List<T> targetObjects);
     public abstract boolean isCollaborator(Long targetId);
     public abstract boolean isCollaborator(T targetObject);
+    public abstract boolean isCollaborator(List<T> targetObjects);
 }
