@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="board")
@@ -20,6 +22,13 @@ public class Board {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name="board_collaborator",
+            joinColumns = {@JoinColumn(name = "board_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+    private Set<User> collaborators;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -47,6 +56,23 @@ public class Board {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<User> getCollaborators() {
+        return collaborators;
+    }
+
+    public Set<String> getCollaboratorsNames() {
+        Set<String> names = new HashSet<>();
+        for(User user: collaborators) {
+            names.add(user.getEmail());
+        }
+
+        return names;
+    }
+
+    public void setCollaborators(Set<User> collaborators) {
+        this.collaborators = collaborators;
     }
 
     public List<BoardColumn> getBoardColumns() {
