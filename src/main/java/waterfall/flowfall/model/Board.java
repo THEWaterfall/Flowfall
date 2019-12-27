@@ -24,6 +24,7 @@ public class Board {
     @JoinColumn(name="user_id")
     private User user;
 
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="board_collaborator",
