@@ -14,6 +14,7 @@ import waterfall.flowfall.service.BoardService;
 import waterfall.flowfall.service.UserService;
 
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
@@ -66,17 +67,6 @@ public class BoardController {
     }
 
     @PreAuthorize("@boardPermissions.isOwner(#id)")
-    @DeleteMapping(value = "/boards/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
-        return boardService.findById(id)
-                .map(board -> {
-                    boardService.delete(board);
-                    return new ResponseEntity<Void>(HttpStatus.OK);
-                })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PreAuthorize("@boardPermissions.isOwner(#id)")
     @PostMapping(value = "/boards/{id}/invite")
     public ResponseEntity<Void> inviteCollaborator(@PathVariable Long id, @RequestParam String collabEmail) {
         return boardService.findById(id)
@@ -96,6 +86,32 @@ public class BoardController {
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
+    }
+
+    @PreAuthorize("@boardPermissions.isOwner(#id)")
+    @DeleteMapping(value = "/boards/{id}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
+        return boardService.findById(id)
+                .map(board -> {
+                    boardService.delete(board);
+                    return new ResponseEntity<Void>(HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PreAuthorize("@boardPermissions.isOwner(#boardId)")
+    @DeleteMapping(value = "/boards/{boardId}/u/{collabId}")
+    public ResponseEntity<Void> deleteCollaborator(@PathVariable Long collabId, @PathVariable Long boardId) {
+        return boardService.findById(boardId)
+                .map(board -> {
+                    board.setCollaborators(board.getCollaborators().stream()
+                            .filter(collab -> !collab.getId().equals(collabId))
+                            .collect(Collectors.toSet())
+                    );
+                    boardService.update(board);
+                    return new ResponseEntity<Void>(HttpStatus.OK);
+                })
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     private Board sortByIndex(Board board) {

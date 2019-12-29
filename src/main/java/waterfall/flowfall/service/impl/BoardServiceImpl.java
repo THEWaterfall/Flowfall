@@ -39,6 +39,7 @@ public class BoardServiceImpl implements BoardService {
                 .map(storedBoard -> {
                     storedBoard.setName(board.getName());
                     storedBoard.setBoardColumns(board.getBoardColumns());
+                    storedBoard.setCollaborators(board.getCollaborators());
                     boardRepository.save(storedBoard);
 
                     return storedBoard;
