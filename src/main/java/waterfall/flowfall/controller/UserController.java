@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import waterfall.flowfall.model.User;
+import waterfall.flowfall.service.BoardService;
 import waterfall.flowfall.service.UserService;
 
 @RestController
@@ -12,15 +13,17 @@ import waterfall.flowfall.service.UserService;
 public class UserController {
 
     private UserService userService;
+    private BoardService boardService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BoardService boardService) {
         this.userService = userService;
+        this.boardService = boardService;
     }
 
     @GetMapping(value = "/users")
     public ResponseEntity getUsers() {
-        return new ResponseEntity(userService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/users/{id}")
@@ -30,9 +33,16 @@ public class UserController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping(value = "/users/b/{boardId}/owner")
+    public ResponseEntity<User> getOwnerByBoardId(@PathVariable Long boardId) {
+        return this.boardService.findById(boardId)
+                .map(board -> new ResponseEntity<>(board.getUser(), HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping(value = "/users/b/{boardId}/collab")
     public ResponseEntity getCollaboratorsByBoardId(@PathVariable Long boardId) {
-        return new ResponseEntity(userService.findCollaboratorsByBoardId(boardId), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findCollaboratorsByBoardId(boardId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/users")
