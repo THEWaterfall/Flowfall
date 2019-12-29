@@ -24,6 +24,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Iterable<User> findCollaboratorsByBoardId(Long boardId) {
+        return userRepository.findCollaboratorsByBoardId(boardId);
+    }
+
+    @Override
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
     }

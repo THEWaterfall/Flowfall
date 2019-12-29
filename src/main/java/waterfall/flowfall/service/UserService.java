@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface UserService {
     Iterable<User> findAll();
+    Iterable<User> findCollaboratorsByBoardId(Long boardId);
+
     Optional<User> findById(Long id);
     Optional<User> findByEmail(String email);
 
