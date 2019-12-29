@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserPrinciple implements UserDetails {
+public class UserPrincipal implements UserDetails {
 
     private String email;
     private String password;
@@ -18,15 +18,15 @@ public class UserPrinciple implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserPrinciple(String email, String password, Long id, Collection<? extends GrantedAuthority> authorities) {
+    public UserPrincipal(String email, String password, Long id, Collection<? extends GrantedAuthority> authorities) {
         this.email = email;
         this.password = password;
         this.authorities = authorities;
         this.id = id;
     }
 
-    public static UserPrinciple build(User user) {
-        return new UserPrinciple(user.getEmail(), user.getPassword(), user.getId(), parseAuthorities(user.getRoles()));
+    public static UserPrincipal build(User user) {
+        return new UserPrincipal(user.getEmail(), user.getPassword(), user.getId(), parseAuthorities(user.getRoles()));
     }
 
     public Long getId() {
