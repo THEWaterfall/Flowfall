@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import waterfall.flowfall.model.User;
-import waterfall.flowfall.security.UserPrinciple;
+import waterfall.flowfall.security.UserPrincipal;
 import waterfall.flowfall.security.jwt.JwtProvider;
 import waterfall.flowfall.security.jwt.JwtResponse;
 
@@ -34,7 +34,7 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtProvider.generateJwtToken(authentication);
-        UserPrinciple userDetails = (UserPrinciple) authentication.getPrincipal();
+        UserPrincipal userDetails = (UserPrincipal) authentication.getPrincipal();
 
         return ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getId(), userDetails.getAuthorities()));
     }
