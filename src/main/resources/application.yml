@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: root
+    url: jdbc:mysql://localhost:3306/flowfall
+    username: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+security:
+  oauth2:
+    redirectUri: http://localhost:8080/oauth2/token
+    client:
+      google:
+        codeEndpoint: https://accounts.google.com/o/oauth2/auth
+        tokenEndpoint: https://accounts.google.com/o/oauth2/token
+        userInfoEndpoint: https://www.googleapis.com/oauth2/v1/userinfo
+        clientId:
+        clientSecret:
+        scope: openid, profile, email
+
+water:
+  jwtExpiration: 86400
+  jwtSecret: waterApiSecretCode

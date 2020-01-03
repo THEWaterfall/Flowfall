@@ -9,11 +9,22 @@ public class UserProfile {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="fullname")
+    private String fullname;
+
     @Column(name="firstname")
     private String firstname;
 
     @Column(name="lastname")
     private String lastname;
+
+    public UserProfile() {
+
+    }
+
+    public UserProfile(String fullname) {
+        this.fullname = fullname;
+    }
 
     public Long getId() {
         return id;
@@ -39,4 +50,11 @@ public class UserProfile {
         this.lastname = lastname;
     }
 
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
 }

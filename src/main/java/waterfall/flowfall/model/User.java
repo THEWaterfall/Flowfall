@@ -1,7 +1,6 @@
 package waterfall.flowfall.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import waterfall.flowfall.security.AuthProvider;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,12 +22,15 @@ public class User {
     @JoinColumn(name="user_profile_id", nullable = true)
     private UserProfile profile;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name="user_role",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id")})
     private List<Role> roles;
+
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
 
     public Long getId() {
         return id;
@@ -70,4 +72,11 @@ public class User {
         this.roles = roles;
     }
 
+    public AuthProvider getProvider() {
+        return provider;
+    }
+
+    public void setProvider(AuthProvider provider) {
+        this.provider = provider;
+    }
 }
