@@ -43,7 +43,8 @@ public class OAuth2Controller {
 
         oauth2Facade.authenticate(provider, code);
 
+
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .header(HttpHeaders.LOCATION, redirectUri).build();
+                .header(HttpHeaders.LOCATION, redirectUri+"?testParam=test").build();
     }
 }
