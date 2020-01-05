@@ -1,9 +1,13 @@
 package waterfall.flowfall.security.oauth2;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Base64;
 
 @Component
 public class OAuth2UrlBuilder {
@@ -43,6 +47,20 @@ public class OAuth2UrlBuilder {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
                 getPropertyForProvider(provider, "userInfoEndpoint"))
                    .queryParam("access_token", accessToken);
+
+        return builder.toUriString();
+    }
+
+    public static String buildResponseUrl(Object response, String redirectUrl) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        UriComponentsBuilder builder = null;
+        try {
+            builder = UriComponentsBuilder.fromUriString(redirectUrl)
+                    .queryParam("response", Base64.getUrlEncoder().encodeToString(mapper.writeValueAsBytes(response)));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
 
         return builder.toUriString();
     }
