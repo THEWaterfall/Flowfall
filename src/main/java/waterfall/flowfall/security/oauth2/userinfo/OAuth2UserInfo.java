@@ -1,4 +1,4 @@
-package waterfall.flowfall.security.oauth2;
+package waterfall.flowfall.security.oauth2.userinfo;
 
 import java.util.Map;
 

@@ -1,6 +1,8 @@
 package waterfall.flowfall.security.oauth2;
 
 import waterfall.flowfall.security.AuthProvider;
+import waterfall.flowfall.security.oauth2.userinfo.GoogleOAuth2UserInfo;
+import waterfall.flowfall.security.oauth2.userinfo.OAuth2UserInfo;
 
 import java.util.Map;
 

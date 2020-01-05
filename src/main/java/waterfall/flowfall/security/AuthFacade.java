@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import waterfall.flowfall.model.Role;
@@ -15,7 +14,7 @@ import waterfall.flowfall.model.UserProfile;
 import waterfall.flowfall.model.UserRole;
 import waterfall.flowfall.security.jwt.JwtProvider;
 import waterfall.flowfall.security.jwt.JwtResponse;
-import waterfall.flowfall.security.oauth2.OAuth2UserInfo;
+import waterfall.flowfall.security.oauth2.userinfo.OAuth2UserInfo;
 import waterfall.flowfall.service.UserService;
 
 import java.util.Arrays;

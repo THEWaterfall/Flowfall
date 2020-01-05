@@ -11,6 +11,7 @@ import waterfall.flowfall.controller.AuthRequest;
 import waterfall.flowfall.model.User;
 import waterfall.flowfall.security.AuthFacade;
 import waterfall.flowfall.security.jwt.JwtResponse;
+import waterfall.flowfall.security.oauth2.userinfo.OAuth2UserInfo;
 import waterfall.flowfall.service.UserService;
 
 import java.util.Map;
