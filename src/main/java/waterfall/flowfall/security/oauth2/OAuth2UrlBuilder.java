@@ -51,7 +51,7 @@ public class OAuth2UrlBuilder {
         return builder.toUriString();
     }
 
-    public static String buildResponseUrl(Object response, String redirectUrl) {
+    public static String buildSuccessResponseUrl(Object response, String redirectUrl) {
         ObjectMapper mapper = new ObjectMapper();
 
         UriComponentsBuilder builder = null;
@@ -61,6 +61,13 @@ public class OAuth2UrlBuilder {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
+        return builder.toUriString();
+    }
+
+    public static String buildFailureResponseUrl(String error, String redirectUrl) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(redirectUrl)
+                    .queryParam("error", error);
 
         return builder.toUriString();
     }

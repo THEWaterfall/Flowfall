@@ -14,6 +14,7 @@ import waterfall.flowfall.model.UserProfile;
 import waterfall.flowfall.model.UserRole;
 import waterfall.flowfall.security.jwt.JwtProvider;
 import waterfall.flowfall.security.jwt.JwtResponse;
+import waterfall.flowfall.security.oauth2.exception.OAuth2AuthenticationException;
 import waterfall.flowfall.security.oauth2.userinfo.OAuth2UserInfo;
 import waterfall.flowfall.service.UserService;
 
@@ -63,6 +64,16 @@ public class AuthFacade {
         user.setRoles(Arrays.asList(new Role(UserRole.USER.toString())));
 
         return authenticate(userService.save(user));
+    }
+
+    public boolean verifyProvider(String provider) {
+        try {
+            AuthProvider.valueOf(provider.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new OAuth2AuthenticationException("Provider " + provider + " is not supported currently");
+        }
+
+        return true;
     }
 
     private Authentication authenticateLocal(String email, String password) {

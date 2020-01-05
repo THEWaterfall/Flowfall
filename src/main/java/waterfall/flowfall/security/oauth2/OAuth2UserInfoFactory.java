@@ -1,6 +1,7 @@
 package waterfall.flowfall.security.oauth2;
 
 import waterfall.flowfall.security.AuthProvider;
+import waterfall.flowfall.security.oauth2.exception.OAuth2AuthenticationException;
 import waterfall.flowfall.security.oauth2.userinfo.GoogleOAuth2UserInfo;
 import waterfall.flowfall.security.oauth2.userinfo.OAuth2UserInfo;
 
@@ -12,8 +13,7 @@ public class OAuth2UserInfoFactory {
         if (provider.equalsIgnoreCase(AuthProvider.GOOGLE.toString())) {
             return new GoogleOAuth2UserInfo(attributes);
         } else {
-           throw new IllegalArgumentException("Provider is not supported: " + provider);
-//            throw new OAuth2AuthenticationProcessingException("Sorry! Login with " + registrationId + " is not supported yet.");
+           throw new OAuth2AuthenticationException("Provider is not supported: " + provider);
         }
     }
 
