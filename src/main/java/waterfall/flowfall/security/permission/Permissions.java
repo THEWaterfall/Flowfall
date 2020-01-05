@@ -16,11 +16,17 @@ public abstract class Permissions<T> {
         return authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 
-    public boolean hasRights(T targetObject) {
+    public boolean hasRights(T targetObject, Long userId) {
         return isAdmin() || isOwner(targetObject) || isCollaborator(targetObject);
     }
 
     public boolean hasRights(List<T> targetObjects) {
+        // TODO: Do not return true if list is empty.
+        // TODO: Even if empty, it should be checked if the user has rights to the objects
+        if(targetObjects.isEmpty()) {
+            return true;
+        }
+
         return isAdmin() || isOwner(targetObjects) || isCollaborator(targetObjects);
     }
 
