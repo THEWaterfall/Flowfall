@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import waterfall.flowfall.security.jwt.JwtResponse;
 import waterfall.flowfall.security.oauth2.OAuth2Facade;
 import waterfall.flowfall.security.oauth2.OAuth2UrlBuilder;
 import waterfall.flowfall.util.CookieUtils;
@@ -41,10 +42,10 @@ public class OAuth2Controller {
         String redirectUri = CookieUtils.getCookie(request, "redirect_uri").get().getValue();
         String provider = CookieUtils.getCookie(request, "provider").get().getValue();
 
-        oauth2Facade.authenticate(provider, code);
-
+        JwtResponse jwtResponse = oauth2Facade.authenticate(provider, code);
 
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .header(HttpHeaders.LOCATION, redirectUri+"?testParam=test").build();
+                .header(HttpHeaders.LOCATION, OAuth2UrlBuilder.buildResponseUrl(jwtResponse, redirectUri))
+                .build();
     }
 }
