@@ -25,6 +25,13 @@ security:
         clientId:
         clientSecret:
         scope: openid, profile, email
+      facebook:
+        codeEndpoint: https://www.facebook.com/dialog/oauth
+        tokenEndpoint: https://graph.facebook.com/v2.4/oauth/access_token
+        userInfoEndpoint: https://graph.facebook.com/me?fields=email,name,picture.type(large)
+        clientId:
+        clientSecret:
+        scope: public_profile, email
 
 water:
   jwtExpiration: 86400

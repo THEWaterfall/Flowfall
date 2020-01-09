@@ -1,5 +1,5 @@
 package waterfall.flowfall.security;
 
 public enum AuthProvider {
-    LOCAL, GOOGLE
+    LOCAL, GOOGLE, FACEBOOK
 }
