@@ -19,7 +19,6 @@ public class Board {
     @Column(name="name")
     private String name;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
