@@ -1,5 +1,6 @@
 package waterfall.flowfall.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import waterfall.flowfall.security.AuthProvider;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
