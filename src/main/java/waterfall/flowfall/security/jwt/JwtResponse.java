@@ -9,13 +9,11 @@ public class JwtResponse {
 
     private String accessToken;
     private String email;
-    private Long id;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public JwtResponse(String accessToken, String email, Long id, Collection<? extends GrantedAuthority> authorities) {
+    public JwtResponse(String accessToken, String email, Collection<? extends GrantedAuthority> authorities) {
         this.accessToken = accessToken;
         this.email = email;
-        this.id = id;
         this.authorities = authorities;
     }
 
@@ -41,13 +39,5 @@ public class JwtResponse {
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

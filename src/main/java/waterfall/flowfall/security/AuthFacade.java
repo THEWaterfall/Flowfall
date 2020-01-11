@@ -53,7 +53,7 @@ public class AuthFacade {
 
         String jwt = jwtProvider.generateJwtToken(userDetails);
 
-        return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getId(), userDetails.getAuthorities());
+        return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities());
     }
 
     public JwtResponse register(String provider, OAuth2UserInfo userInfo) {
