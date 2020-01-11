@@ -4,10 +4,12 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import waterfall.flowfall.security.UserPrincipal;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtProvider {
@@ -20,9 +22,10 @@ public class JwtProvider {
     @Value("${water.jwtExpiration}")
     private int jwtExpiration;
 
-    public String generateJwtToken(Authentication authentication) {
+    public String generateJwtToken(UserPrincipal userPrincipal) {
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(userPrincipal.getUsername())
+                .setClaims(generateClaims(userPrincipal))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -53,5 +56,12 @@ public class JwtProvider {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody().getSubject();
+    }
+
+    private Map<String, Object> generateClaims(UserPrincipal userPrincipal) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", String.valueOf(userPrincipal.getId()));
+
+        return claims;
     }
 }

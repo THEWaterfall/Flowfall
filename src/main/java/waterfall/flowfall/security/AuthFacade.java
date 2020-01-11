@@ -49,9 +49,9 @@ public class AuthFacade {
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = jwtProvider.generateJwtToken(authentication);
         UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(user.getEmail());
+
+        String jwt = jwtProvider.generateJwtToken(userDetails);
 
         return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getId(), userDetails.getAuthorities());
     }
