@@ -11,6 +11,9 @@ public class Row {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="name")
+    private String name;
+
     @Column(name="content")
     private String content;
 
@@ -54,4 +57,11 @@ public class Row {
         this.boardColumn = boardColumn;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
