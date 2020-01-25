@@ -1,6 +1,5 @@
 package waterfall.flowfall.service;
 
-import org.springframework.stereotype.Service;
 import waterfall.flowfall.model.RowMessage;
 
 import java.util.Optional;
