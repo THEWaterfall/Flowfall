@@ -17,14 +17,14 @@ public class RowMessageController {
         this.rowMessageService = rowMessageService;
     }
 
-    @GetMapping("/rowMessages/r/{rowId}")
+    @GetMapping(value = "/rowMessages/r/{rowId}")
     public ResponseEntity getRowMessagesByRowId(@PathVariable Long rowId) {
-        return new ResponseEntity<>(rowMessageService.findByRowId(rowId), HttpStatus.OK);
+        return new ResponseEntity<>(rowMessageService.findAllByRowId(rowId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/rowMessages/{id}")
+    @DeleteMapping(value = "/rowMessages/{id}")
     public ResponseEntity<Void> deleteRowMessage(@PathVariable Long id) {
-        return rowMessageService.findByRowId(id)
+        return rowMessageService.findById(id)
                 .map(rowMessage -> {
                     rowMessageService.delete(rowMessage);
                     return new ResponseEntity<Void>(HttpStatus.OK);

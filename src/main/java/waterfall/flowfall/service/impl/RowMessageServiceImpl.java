@@ -29,8 +29,8 @@ public class RowMessageServiceImpl implements RowMessageService {
     }
 
     @Override
-    public Optional<RowMessage> findByRowId(Long rowId) {
-        return rowMessageRepository.findByRowId(rowId);
+    public Iterable<RowMessage> findAllByRowId(Long rowId) {
+        return rowMessageRepository.findAllByRowId(rowId);
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface RowMessageService {
     Iterable<RowMessage> findAll();
     Optional<RowMessage> findById(Long id);
-    Optional<RowMessage> findByRowId(Long rowId);
+    Iterable<RowMessage> findAllByRowId(Long rowId);
 
     RowMessage update(RowMessage rowMessage);
 
