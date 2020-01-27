@@ -6,6 +6,7 @@ import waterfall.flowfall.model.RowMessage;
 import waterfall.flowfall.repository.RowMessageRepository;
 import waterfall.flowfall.service.RowMessageService;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -28,9 +29,8 @@ public class RowMessageServiceImpl implements RowMessageService {
         return rowMessageRepository.findById(id);
     }
 
-    @Override
-    public Iterable<RowMessage> findAllByRowId(Long rowId) {
-        return rowMessageRepository.findAllByRowId(rowId);
+    public Iterable<RowMessage> findAllByRowIdOrderByCreatedDesc(Long rowId) {
+        return rowMessageRepository.findAllByRowIdOrderByCreatedDesc(rowId);
     }
 
     @Override
@@ -40,6 +40,7 @@ public class RowMessageServiceImpl implements RowMessageService {
 
     @Override
     public RowMessage save(RowMessage rowMessage) {
+        rowMessage.setCreated(new Date());
         return rowMessageRepository.save(rowMessage);
     }
 

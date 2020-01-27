@@ -7,5 +7,5 @@ import waterfall.flowfall.model.RowMessage;
 
 @Repository
 public interface RowMessageRepository extends CrudRepository<RowMessage, Long> {
-    Iterable<RowMessage> findAllByRowId(Long rowId);
+    Iterable<RowMessage> findAllByRowIdOrderByCreatedDesc(Long rowId);
 }

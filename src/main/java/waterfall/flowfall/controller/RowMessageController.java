@@ -19,7 +19,7 @@ public class RowMessageController {
 
     @GetMapping(value = "/rowMessages/r/{rowId}")
     public ResponseEntity getRowMessagesByRowId(@PathVariable Long rowId) {
-        return new ResponseEntity<>(rowMessageService.findAllByRowId(rowId), HttpStatus.OK);
+        return new ResponseEntity<>(rowMessageService.findAllByRowIdOrderByCreatedDesc(rowId), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/rowMessages/{id}")

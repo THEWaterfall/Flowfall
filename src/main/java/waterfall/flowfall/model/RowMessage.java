@@ -1,6 +1,7 @@
 package waterfall.flowfall.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="row_message")
@@ -19,6 +20,9 @@ public class RowMessage {
 
     @Column(name="text")
     private String text;
+
+    @Column(name="created")
+    private Date created;
 
     public Long getId() {
         return id;
@@ -50,5 +54,13 @@ public class RowMessage {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }
