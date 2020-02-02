@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import waterfall.flowfall.model.RowMessage;
 import waterfall.flowfall.service.RowMessageService;
 
 @RestController
@@ -20,6 +21,11 @@ public class RowMessageController {
     @GetMapping(value = "/rowMessages/r/{rowId}")
     public ResponseEntity getRowMessagesByRowId(@PathVariable Long rowId) {
         return new ResponseEntity<>(rowMessageService.findAllByRowIdOrderByCreatedDesc(rowId), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/rowMessages")
+    public ResponseEntity<RowMessage> updateRowMessage(@RequestBody RowMessage message) {
+        return new ResponseEntity<>(this.rowMessageService.update(message), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/rowMessages/{id}")
