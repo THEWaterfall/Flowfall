@@ -49,11 +49,11 @@ public class AuthFacade {
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = jwtProvider.generateJwtToken(authentication);
         UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(user.getEmail());
 
-        return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getId(), userDetails.getAuthorities());
+        String jwt = jwtProvider.generateJwtToken(userDetails);
+
+        return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities());
     }
 
     public JwtResponse register(String provider, OAuth2UserInfo userInfo) {
