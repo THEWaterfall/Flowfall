@@ -3,11 +3,11 @@ package waterfall.flowfall.websocket;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum MessageType {
-    @JsonProperty("send")
-    SEND("send"),
+    @JsonProperty("SEND")
+    SEND("SEND"),
 
-    @JsonProperty("delete")
-    DELETE("delete");
+    @JsonProperty("DELETE")
+    DELETE("DELETE");
 
     private String type;
 
