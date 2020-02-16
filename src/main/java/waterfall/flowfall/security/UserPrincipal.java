@@ -26,7 +26,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     public static UserPrincipal build(User user) {
-        return new UserPrincipal(user.getEmail(), user.getPassword(), user.getId(), parseAuthorities(user.getRoles()));
+        return new UserPrincipal(user.getEmail(), user.getPassword(), user.getId(), parseAuthorities(user.getGlobalRoles()));
     }
 
     public Long getId() {
