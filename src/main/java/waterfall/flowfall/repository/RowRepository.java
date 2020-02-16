@@ -6,5 +6,5 @@ import waterfall.flowfall.model.Row;
 
 @Repository
 public interface RowRepository extends CrudRepository<Row, Long> {
-
+    Iterable<Row> findAllByBoardColumnId(Long boardColumnId);
 }

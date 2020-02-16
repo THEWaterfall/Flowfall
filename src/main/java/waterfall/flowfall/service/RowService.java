@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public interface RowService {
     Iterable<Row> findAll();
+    Iterable<Row> findAllByBoardColumnId(Long boardColumnId);
     Optional<Row> findById(Long id);
 
     Row update(Row row);

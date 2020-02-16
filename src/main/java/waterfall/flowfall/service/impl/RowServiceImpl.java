@@ -22,6 +22,11 @@ public class RowServiceImpl implements RowService {
     }
 
     @Override
+    public Iterable<Row> findAllByBoardColumnId(Long boardColumnId) {
+        return rowRepository.findAllByBoardColumnId(boardColumnId);
+    }
+
+    @Override
     public Optional<Row> findById(Long id) {
         return rowRepository.findById(id);
     }
