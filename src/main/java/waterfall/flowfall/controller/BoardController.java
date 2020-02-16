@@ -17,7 +17,7 @@ import java.util.Comparator;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
-@RequestMapping(value = "/boards")
+@RequestMapping(value = "/api/v1/boards")
 public class BoardController {
 
     private BoardService boardService;
