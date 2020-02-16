@@ -1,10 +1,11 @@
 package waterfall.flowfall.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import waterfall.flowfall.security.AuthProvider;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="user")
@@ -29,6 +30,10 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "global_role_id")})
     private List<GlobalRole> globalRoles;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy="user")
+    private Set<UserRole> userRoles;
 
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
@@ -65,19 +70,27 @@ public class User {
         this.profile = profile;
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
     public AuthProvider getProvider() {
         return provider;
     }
 
     public void setProvider(AuthProvider provider) {
         this.provider = provider;
+    }
+
+    public List<GlobalRole> getGlobalRoles() {
+        return globalRoles;
+    }
+
+    public void setGlobalRoles(List<GlobalRole> globalRoles) {
+        this.globalRoles = globalRoles;
+    }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 }
