@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import waterfall.flowfall.model.Board;
 import waterfall.flowfall.model.User;
 import waterfall.flowfall.service.BoardService;
 import waterfall.flowfall.service.UserService;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
+@RequestMapping(value = "/api/v1/boards/{boardId}/collab")
 public class CollaboratorController {
 
     private BoardService boardService;
@@ -25,28 +27,28 @@ public class CollaboratorController {
         this.userService = userService;
     }
 
-    @PostAuthorize("@userPermissions.isOwner(#userId)")
-    @GetMapping(value = "/boards/u/{userId}/collab")
-    public ResponseEntity getBoardsByCollaborator(@PathVariable Long userId) {
-        return new ResponseEntity(boardService.findAllCollabBoardsByUserId(userId), HttpStatus.OK);
+    @GetMapping(value = "/")
+    public ResponseEntity<Iterable<User>> getCollaboratorsByBoardId(@PathVariable Long boardId) {
+        return new ResponseEntity<>(userService.findCollaboratorsByBoardId(boardId), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/b/{boardId}/owner")
+    @GetMapping(value = "/owner")
     public ResponseEntity<User> getOwnerByBoardId(@PathVariable Long boardId) {
         return this.boardService.findById(boardId)
                 .map(board -> new ResponseEntity<>(board.getUser(), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(value = "/users/b/{boardId}/collab")
-    public ResponseEntity getCollaboratorsByBoardId(@PathVariable Long boardId) {
-        return new ResponseEntity<>(userService.findCollaboratorsByBoardId(boardId), HttpStatus.OK);
+    @PostAuthorize("@userPermissions.isOwner(#collabId)")
+    @GetMapping(value = "/{collabId}")
+    public ResponseEntity<Iterable<Board>> getBoardsByCollaborator(@PathVariable Long collabId) {
+        return new ResponseEntity<>(boardService.findAllCollabBoardsByUserId(collabId), HttpStatus.OK);
     }
 
-    @PreAuthorize("@boardPermissions.isOwner(#id)")
-    @PostMapping(value = "/boards/{id}/invite")
-    public ResponseEntity<Void> inviteCollaborator(@PathVariable Long id, @RequestParam String collabEmail) {
-        return boardService.findById(id)
+    @PreAuthorize("@boardPermissions.isOwner(#boardId)")
+    @PostMapping(value = "/invite")
+    public ResponseEntity<Void> inviteCollaborator(@PathVariable Long boardId, @RequestParam String collabEmail) {
+        return boardService.findById(boardId)
                 .map(board -> {
                     User user = userService.findByEmail(collabEmail).orElse(null);
                     if (user == null) {
@@ -66,7 +68,7 @@ public class CollaboratorController {
     }
 
     @PreAuthorize("@boardPermissions.isOwner(#boardId)")
-    @DeleteMapping(value = "/boards/{boardId}/u/{collabId}")
+    @DeleteMapping(value = "/{collabId}")
     public ResponseEntity<Void> deleteCollaborator(@PathVariable Long collabId, @PathVariable Long boardId) {
         return boardService.findById(boardId)
                 .map(board -> {
