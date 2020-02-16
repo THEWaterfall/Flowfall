@@ -8,14 +8,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import waterfall.flowfall.model.Role;
+import waterfall.flowfall.model.GlobalRole;
 import waterfall.flowfall.model.User;
 import waterfall.flowfall.model.UserProfile;
-import waterfall.flowfall.model.UserRole;
 import waterfall.flowfall.security.jwt.JwtProvider;
 import waterfall.flowfall.security.jwt.JwtResponse;
 import waterfall.flowfall.security.oauth2.exception.OAuth2AuthenticationException;
 import waterfall.flowfall.security.oauth2.userinfo.OAuth2UserInfo;
+import waterfall.flowfall.security.permission.UserGlobalRole;
 import waterfall.flowfall.service.UserService;
 
 import java.util.Arrays;
@@ -61,7 +61,7 @@ public class AuthFacade {
         user.setProvider(AuthProvider.valueOf(provider.toUpperCase()));
         user.setEmail(userInfo.getEmail());
         user.setProfile(new UserProfile(userInfo.getName()));
-        user.setRoles(Arrays.asList(new Role(UserRole.USER.toString())));
+        user.setGlobalRoles(Arrays.asList(new GlobalRole(UserGlobalRole.USER.getLiteral())));
 
         return authenticate(userService.save(user));
     }
