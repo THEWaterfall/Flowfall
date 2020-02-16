@@ -9,6 +9,7 @@ import waterfall.flowfall.service.BoardColumnService;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
+@RequestMapping(value = "/api/v1/boards/{boardId}/columns")
 public class BoardColumnController {
 
     private BoardColumnService boardColumnService;
@@ -18,17 +19,22 @@ public class BoardColumnController {
         this.boardColumnService = boardColumnService;
     }
 
-    @PutMapping(value = "/boardColumns")
-    public ResponseEntity<BoardColumn> updateColumn(@RequestBody BoardColumn boardColumn) {
-        return new ResponseEntity<>(boardColumnService.update(boardColumn), HttpStatus.OK);
+    @GetMapping(value = "/")
+    public ResponseEntity<Iterable<BoardColumn>> getColumns(@PathVariable Long boardId) {
+        return new ResponseEntity<>(boardColumnService.findAllByBoardId(boardId), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/boardColumns")
-    public ResponseEntity<BoardColumn> addColumn(@RequestBody BoardColumn boardColumn) {
-        return new ResponseEntity<>(boardColumnService.save(boardColumn), HttpStatus.OK);
+    @PostMapping(value = "/")
+    public ResponseEntity<BoardColumn> addColumn(@RequestBody BoardColumn column) {
+        return new ResponseEntity<>(boardColumnService.save(column), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/boardColumns/{id}")
+    @PutMapping(value = "/")
+    public ResponseEntity<BoardColumn> updateColumn(@RequestBody BoardColumn column) {
+        return new ResponseEntity<>(boardColumnService.update(column), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteColumn(@PathVariable Long id) {
         return boardColumnService.findById(id)
                 .map(boardColumn -> {
