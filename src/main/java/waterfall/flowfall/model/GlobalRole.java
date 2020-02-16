@@ -3,8 +3,8 @@ package waterfall.flowfall.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="role")
-public class Role {
+@Table(name="global_role")
+public class GlobalRole {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -12,11 +12,11 @@ public class Role {
     @Column(name="name")
     private String name;
 
-    public Role() {
+    public GlobalRole() {
 
     }
 
-    public Role(String name) {
+    public GlobalRole(String name) {
         this.name = name;
     }
 

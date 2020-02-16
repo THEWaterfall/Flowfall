@@ -25,10 +25,10 @@ public class User {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-            name="user_role",
+            name="user_global_role",
             joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<Role> roles;
+            inverseJoinColumns = {@JoinColumn(name = "global_role_id")})
+    private List<GlobalRole> globalRoles;
 
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;

@@ -3,7 +3,7 @@ package waterfall.flowfall.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import waterfall.flowfall.model.Role;
+import waterfall.flowfall.model.GlobalRole;
 import waterfall.flowfall.model.User;
 
 import java.util.Collection;
@@ -68,8 +68,8 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 
-    private static List<GrantedAuthority> parseAuthorities(List<Role> roles) {
-        return roles.stream()
+    private static List<GrantedAuthority> parseAuthorities(List<GlobalRole> globalRoles) {
+        return globalRoles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toList());
     }
