@@ -9,6 +9,7 @@ import waterfall.flowfall.service.RowService;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
+@RequestMapping("/api/v1/boards/{boardId}/columns/{colId}/rows")
 public class RowController {
 
     private RowService rowService;
@@ -18,17 +19,29 @@ public class RowController {
         this.rowService = rowService;
     }
 
-    @PutMapping(value = "/rows")
-    public ResponseEntity<Row> updateRow(@RequestBody Row Row) {
-        return new ResponseEntity<>(rowService.update(Row), HttpStatus.OK);
+    @GetMapping(value = "/")
+    public ResponseEntity<Iterable<Row>> getRows(@PathVariable Long boardId, @PathVariable Long colId) {
+        return new ResponseEntity<>(rowService.findAllByBoardColumnId(colId), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/rows")
-    public ResponseEntity<Row> addRow(@RequestBody Row Row) {
-        return new ResponseEntity<>(rowService.save(Row), HttpStatus.OK);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Row> getRowById(@PathVariable Long boardId, @PathVariable Long id) {
+        return rowService.findById(id)
+                .map(row -> new ResponseEntity<>(row, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping(value = "/rows/{id}")
+    @PostMapping(value = "/")
+    public ResponseEntity<Row> addRow(@RequestBody Row row) {
+        return new ResponseEntity<>(rowService.save(row), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/")
+    public ResponseEntity<Row> updateRow(@RequestBody Row row) {
+        return new ResponseEntity<>(rowService.update(row), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteRow(@PathVariable Long id) {
         return rowService.findById(id)
                 .map(row -> {
