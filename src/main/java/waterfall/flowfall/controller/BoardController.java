@@ -27,13 +27,13 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public ResponseEntity<Iterable<Board>> getBoards() {
         User user = SecurityContextUtils.getAuthenticatedUser();
         return new ResponseEntity<>(boardService.findAllByUserId(user.getId()), HttpStatus.OK);
     }
 
-    @PostAuthorize("@boardPermissions.hasRights(returnObject.getBody())")
+    @PostAuthorize("@access.toBoard('READ', #id)")
     @GetMapping(value = "/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
         return boardService.findById(id)
@@ -41,13 +41,13 @@ public class BoardController {
                 .orElse(new ResponseEntity<>(HttpStatus.OK));
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public ResponseEntity<Board> addBoard(@RequestBody Board board) {
         return new ResponseEntity<>(boardService.save(board), HttpStatus.OK);
     }
 
     @PreAuthorize("@boardPermissions.hasRights(#board)")
-    @PutMapping(value = "/")
+    @PutMapping(value = "")
     public ResponseEntity<Board> updateBoard(@RequestBody Board board) {
         return new ResponseEntity<>(boardService.update(board), HttpStatus.OK);
     }

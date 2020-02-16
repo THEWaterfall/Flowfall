@@ -27,7 +27,7 @@ public class CollaboratorController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public ResponseEntity<Iterable<User>> getCollaboratorsByBoardId(@PathVariable Long boardId) {
         return new ResponseEntity<>(userService.findCollaboratorsByBoardId(boardId), HttpStatus.OK);
     }

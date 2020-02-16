@@ -19,7 +19,7 @@ public class RowMessageController {
         this.rowMessageService = rowMessageService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public ResponseEntity<Iterable<RowMessage>> getRowMessagesByRowId(@PathVariable Long rowId) {
         return new ResponseEntity<>(rowMessageService.findAllByRowIdOrderByCreatedDesc(rowId), HttpStatus.OK);
     }
@@ -31,12 +31,12 @@ public class RowMessageController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public ResponseEntity<RowMessage> addRowMessage(@RequestBody RowMessage rowMessage) {
         return new ResponseEntity<>(rowMessageService.save(rowMessage), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/")
+    @PutMapping(value = "")
     public ResponseEntity<RowMessage> updateRowMessage(@RequestBody RowMessage message) {
         return new ResponseEntity<>(this.rowMessageService.update(message), HttpStatus.OK);
     }

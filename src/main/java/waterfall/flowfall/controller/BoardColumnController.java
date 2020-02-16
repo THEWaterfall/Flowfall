@@ -19,7 +19,7 @@ public class BoardColumnController {
         this.boardColumnService = boardColumnService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public ResponseEntity<Iterable<BoardColumn>> getColumns(@PathVariable Long boardId) {
         return new ResponseEntity<>(boardColumnService.findAllByBoardId(boardId), HttpStatus.OK);
     }
@@ -31,12 +31,12 @@ public class BoardColumnController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public ResponseEntity<BoardColumn> addColumn(@RequestBody BoardColumn column) {
         return new ResponseEntity<>(boardColumnService.save(column), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/")
+    @PutMapping(value = "")
     public ResponseEntity<BoardColumn> updateColumn(@RequestBody BoardColumn column) {
         return new ResponseEntity<>(boardColumnService.update(column), HttpStatus.OK);
     }

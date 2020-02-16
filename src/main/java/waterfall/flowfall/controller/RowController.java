@@ -19,7 +19,7 @@ public class RowController {
         this.rowService = rowService;
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public ResponseEntity<Iterable<Row>> getRows(@PathVariable Long boardId, @PathVariable Long colId) {
         return new ResponseEntity<>(rowService.findAllByBoardColumnId(colId), HttpStatus.OK);
     }
@@ -31,12 +31,12 @@ public class RowController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "")
     public ResponseEntity<Row> addRow(@RequestBody Row row) {
         return new ResponseEntity<>(rowService.save(row), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/")
+    @PutMapping(value = "")
     public ResponseEntity<Row> updateRow(@RequestBody Row row) {
         return new ResponseEntity<>(rowService.update(row), HttpStatus.OK);
     }
