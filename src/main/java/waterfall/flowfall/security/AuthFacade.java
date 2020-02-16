@@ -15,7 +15,7 @@ import waterfall.flowfall.security.jwt.JwtProvider;
 import waterfall.flowfall.security.jwt.JwtResponse;
 import waterfall.flowfall.security.oauth2.exception.OAuth2AuthenticationException;
 import waterfall.flowfall.security.oauth2.userinfo.OAuth2UserInfo;
-import waterfall.flowfall.security.permission.UserGlobalRole;
+import waterfall.flowfall.model.enums.UserGlobalRole;
 import waterfall.flowfall.service.UserService;
 
 import java.util.Arrays;

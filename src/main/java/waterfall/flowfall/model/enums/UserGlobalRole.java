@@ -1,4 +1,4 @@
-package waterfall.flowfall.security.permission;
+package waterfall.flowfall.model.enums;
 
 public enum UserGlobalRole {
     ADMIN("ADMIN"),
