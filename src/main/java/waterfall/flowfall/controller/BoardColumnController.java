@@ -24,6 +24,13 @@ public class BoardColumnController {
         return new ResponseEntity<>(boardColumnService.findAllByBoardId(boardId), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<BoardColumn> getColumnById(@PathVariable Long id) {
+        return boardColumnService.findById(id)
+                .map(column -> new ResponseEntity<>(column, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping(value = "/")
     public ResponseEntity<BoardColumn> addColumn(@RequestBody BoardColumn column) {
         return new ResponseEntity<>(boardColumnService.save(column), HttpStatus.OK);
