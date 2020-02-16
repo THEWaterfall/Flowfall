@@ -11,57 +11,49 @@ import waterfall.flowfall.model.BoardColumn;
 import waterfall.flowfall.model.Row;
 import waterfall.flowfall.model.User;
 import waterfall.flowfall.service.BoardService;
-import waterfall.flowfall.service.UserService;
+import waterfall.flowfall.util.SecurityContextUtils;
 
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
+@RequestMapping(value = "/boards")
 public class BoardController {
 
     private BoardService boardService;
-    private UserService userService;
 
     @Autowired
-    public BoardController(BoardService boardService, UserService userService) {
+    public BoardController(BoardService boardService) {
         this.boardService = boardService;
-        this.userService = userService;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping(value = "/boards")
-    public ResponseEntity getBoards() {
-        return new ResponseEntity(boardService.findAll(), HttpStatus.OK);
-    }
-
-    @PostAuthorize("@boardPermissions.hasRights(returnObject.getBody())")
-    @GetMapping(value = "/boards/u/{id}")
-    public ResponseEntity getBoardsByUserId(@PathVariable Long id) {
-        return new ResponseEntity(boardService.findAllByUserId(id), HttpStatus.OK);
+    @GetMapping(value = "/")
+    public ResponseEntity<Iterable<Board>> getBoards() {
+        User user = SecurityContextUtils.getAuthenticatedUser();
+        return new ResponseEntity<>(boardService.findAllByUserId(user.getId()), HttpStatus.OK);
     }
 
     @PostAuthorize("@boardPermissions.hasRights(returnObject.getBody())")
-    @GetMapping(value = "/boards/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
         return boardService.findById(id)
                 .map(board -> new ResponseEntity<>(sortByIndex(board), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.OK));
     }
 
-    @PostMapping(value = "/boards")
+    @PostMapping(value = "/")
     public ResponseEntity<Board> addBoard(@RequestBody Board board) {
         return new ResponseEntity<>(boardService.save(board), HttpStatus.OK);
     }
 
     @PreAuthorize("@boardPermissions.hasRights(#board)")
-    @PutMapping(value = "/boards")
+    @PutMapping(value = "/")
     public ResponseEntity<Board> updateBoard(@RequestBody Board board) {
         return new ResponseEntity<>(boardService.update(board), HttpStatus.OK);
     }
 
     @PreAuthorize("@boardPermissions.isOwner(#id)")
-    @DeleteMapping(value = "/boards/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
         return boardService.findById(id)
                 .map(board -> {
