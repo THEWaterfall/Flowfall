@@ -24,6 +24,11 @@ public class BoardColumnServiceImpl implements BoardColumnService {
     }
 
     @Override
+    public Iterable<BoardColumn> findAllByBoardId(Long boardId) {
+        return boardColumnRepository.findAllByBoardId(boardId);
+    }
+
+    @Override
     public Optional<BoardColumn> findById(Long id) {
         return boardColumnRepository.findById(id);
     }
