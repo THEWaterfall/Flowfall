@@ -9,6 +9,7 @@ import waterfall.flowfall.service.RowMessageService;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
+@RequestMapping("/api/v1/boards/{boardId}/columns/{colId}/rows/{rowId}/rowMessages")
 public class RowMessageController {
 
     private RowMessageService rowMessageService;
@@ -18,17 +19,29 @@ public class RowMessageController {
         this.rowMessageService = rowMessageService;
     }
 
-    @GetMapping(value = "/rowMessages/r/{rowId}")
-    public ResponseEntity getRowMessagesByRowId(@PathVariable Long rowId) {
+    @GetMapping(value = "/")
+    public ResponseEntity<Iterable<RowMessage>> getRowMessagesByRowId(@PathVariable Long rowId) {
         return new ResponseEntity<>(rowMessageService.findAllByRowIdOrderByCreatedDesc(rowId), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/rowMessages")
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<RowMessage> getRowMessageById(@PathVariable Long id) {
+        return rowMessageService.findById(id)
+                .map(rowMessage -> new ResponseEntity<>(rowMessage, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping(value = "/")
+    public ResponseEntity<RowMessage> addRowMessage(@RequestBody RowMessage rowMessage) {
+        return new ResponseEntity<>(rowMessageService.save(rowMessage), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/")
     public ResponseEntity<RowMessage> updateRowMessage(@RequestBody RowMessage message) {
         return new ResponseEntity<>(this.rowMessageService.update(message), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/rowMessages/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteRowMessage(@PathVariable Long id) {
         return rowMessageService.findById(id)
                 .map(rowMessage -> {
