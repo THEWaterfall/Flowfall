@@ -41,12 +41,6 @@ public class BoardController {
         return new ResponseEntity(boardService.findAllByUserId(id), HttpStatus.OK);
     }
 
-    @PostAuthorize("@userPermissions.isOwner(#userId)")
-    @GetMapping(value = "/boards/u/{userId}/collab")
-    public ResponseEntity getBoardsByCollaborator(@PathVariable Long userId) {
-        return new ResponseEntity(boardService.findAllCollabBoardsByUserId(userId), HttpStatus.OK);
-    }
-
     @PostAuthorize("@boardPermissions.hasRights(returnObject.getBody())")
     @GetMapping(value = "/boards/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
@@ -67,48 +61,11 @@ public class BoardController {
     }
 
     @PreAuthorize("@boardPermissions.isOwner(#id)")
-    @PostMapping(value = "/boards/{id}/invite")
-    public ResponseEntity<Void> inviteCollaborator(@PathVariable Long id, @RequestParam String collabEmail) {
-        return boardService.findById(id)
-                .map(board -> {
-                    User user = userService.findByEmail(collabEmail).orElse(null);
-                    if (user == null) {
-                        return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-                    }
-
-                    if(board.getCollaborators().contains(user)) {
-                        return new ResponseEntity<Void>(HttpStatus.OK);
-                    }
-
-                    board.addCollaborator(user);
-                    boardService.update(board);
-
-                    return new ResponseEntity<Void>(HttpStatus.OK);
-                })
-                .orElse(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
-    }
-
-    @PreAuthorize("@boardPermissions.isOwner(#id)")
     @DeleteMapping(value = "/boards/{id}")
     public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
         return boardService.findById(id)
                 .map(board -> {
                     boardService.delete(board);
-                    return new ResponseEntity<Void>(HttpStatus.OK);
-                })
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @PreAuthorize("@boardPermissions.isOwner(#boardId)")
-    @DeleteMapping(value = "/boards/{boardId}/u/{collabId}")
-    public ResponseEntity<Void> deleteCollaborator(@PathVariable Long collabId, @PathVariable Long boardId) {
-        return boardService.findById(boardId)
-                .map(board -> {
-                    board.setCollaborators(board.getCollaborators().stream()
-                            .filter(collab -> !collab.getId().equals(collabId))
-                            .collect(Collectors.toSet())
-                    );
-                    boardService.update(board);
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

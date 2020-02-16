@@ -33,18 +33,6 @@ public class UserController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping(value = "/users/b/{boardId}/owner")
-    public ResponseEntity<User> getOwnerByBoardId(@PathVariable Long boardId) {
-        return this.boardService.findById(boardId)
-                .map(board -> new ResponseEntity<>(board.getUser(), HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    @GetMapping(value = "/users/b/{boardId}/collab")
-    public ResponseEntity getCollaboratorsByBoardId(@PathVariable Long boardId) {
-        return new ResponseEntity<>(userService.findCollaboratorsByBoardId(boardId), HttpStatus.OK);
-    }
-
     @PostMapping(value = "/users")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
