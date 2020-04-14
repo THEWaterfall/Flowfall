@@ -7,6 +7,7 @@ public enum UserGlobalRole {
     private String globalRole;
 
     UserGlobalRole(String globalRole) {
+        this.globalRole = globalRole;
     }
 
     public String getLiteral() {
