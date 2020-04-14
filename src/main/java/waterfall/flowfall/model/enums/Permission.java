@@ -2,8 +2,9 @@ package waterfall.flowfall.model.enums;
 
 public enum Permission {
     READ("READ"),
-    WRITE("WRITE"),
+    CREATE("CREATE"),
     UPDATE("UPDATE"),
+    DELETE("DELETE"),
     INVITE("INVITE");
 
     private String permission;
