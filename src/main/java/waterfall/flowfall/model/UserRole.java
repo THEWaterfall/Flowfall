@@ -9,19 +9,28 @@ import java.io.Serializable;
 @Table(name = "user_role")
 public class UserRole implements Serializable {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @JsonBackReference
-    @Id
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
-    @Id
     @ManyToOne
     @JoinColumn(name="role_id")
     private Role role;
 
     @JoinColumn(name="entity_id")
     private Long entityId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public User getUser() {
         return user;

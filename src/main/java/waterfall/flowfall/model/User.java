@@ -32,7 +32,7 @@ public class User {
     private List<GlobalRole> globalRoles;
 
     @JsonManagedReference
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="user", cascade = CascadeType.ALL)
     private Set<UserRole> userRoles;
 
     @Enumerated(EnumType.STRING)
