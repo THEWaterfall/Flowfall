@@ -11,7 +11,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/api/v1/auth")
 public class AuthController {
 
     private AuthFacade authFacade;

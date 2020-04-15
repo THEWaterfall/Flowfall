@@ -3,22 +3,21 @@ package waterfall.flowfall.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import waterfall.flowfall.model.User;
-import waterfall.flowfall.service.BoardService;
 import waterfall.flowfall.service.UserService;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
+@PreAuthorize("@access.isAdmin()")
 public class UserController {
 
     private UserService userService;
-    private BoardService boardService;
 
     @Autowired
-    public UserController(UserService userService, BoardService boardService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.boardService = boardService;
     }
 
     @GetMapping(value = "/users")

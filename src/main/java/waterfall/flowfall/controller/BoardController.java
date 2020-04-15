@@ -33,7 +33,7 @@ public class BoardController {
         return new ResponseEntity<>(boardService.findAllByUserId(user.getId()), HttpStatus.OK);
     }
 
-    @PostAuthorize("@access.toBoard('READ', #id)")
+    @PreAuthorize("@access.require('BOARD', 'READ', #id)")
     @GetMapping(value = "/{id}")
     public ResponseEntity<Board> getBoardById(@PathVariable Long id) {
         return boardService.findById(id)
@@ -41,18 +41,24 @@ public class BoardController {
                 .orElse(new ResponseEntity<>(HttpStatus.OK));
     }
 
+    @GetMapping(value = "/collab")
+    public ResponseEntity<Iterable<Board>> getCollaborativeBoards() {
+        User user = SecurityContextUtils.getAuthenticatedUser();
+        return new ResponseEntity<>(boardService.findAllCollabBoardsByUserId(user.getId()), HttpStatus.OK);
+    }
+
     @PostMapping(value = "")
     public ResponseEntity<Board> addBoard(@RequestBody Board board) {
         return new ResponseEntity<>(boardService.save(board), HttpStatus.OK);
     }
 
-    @PreAuthorize("@boardPermissions.hasRights(#board)")
+    @PreAuthorize("@access.require('BOARD', 'UPDATE', #board.id)")
     @PutMapping(value = "")
     public ResponseEntity<Board> updateBoard(@RequestBody Board board) {
         return new ResponseEntity<>(boardService.update(board), HttpStatus.OK);
     }
 
-    @PreAuthorize("@boardPermissions.isOwner(#id)")
+    @PreAuthorize("@access.require('BOARD', 'DELETE', #id)")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
         return boardService.findById(id)

@@ -19,14 +19,14 @@ public class Access {
         this.rolePermissionRepository = rolePermissionRepository;
     }
 
-    public boolean toBoard(Permission permission, Long boardId) {
+    public boolean require(Entity entity, Permission permission, Long boardId) {
         if (isAdmin()) {
             return true;
         }
 
         User user = SecurityContextUtils.getAuthenticatedUser();
 
-        return rolePermissionRepository.hasAccess(user.getId(), boardId, Entity.BOARD, permission);
+        return rolePermissionRepository.hasAccess(user.getId(), boardId, entity, permission);
     }
 
     public boolean isAdmin() {

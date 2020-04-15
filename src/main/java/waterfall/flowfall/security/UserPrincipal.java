@@ -3,6 +3,7 @@ package waterfall.flowfall.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import waterfall.flowfall.model.GlobalRole;
 import waterfall.flowfall.model.User;
 
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class UserPrincipal implements UserDetails {
 
     private String email;
@@ -17,6 +19,10 @@ public class UserPrincipal implements UserDetails {
     private Long id;
 
     private Collection<? extends GrantedAuthority> authorities;
+
+    public UserPrincipal() {
+
+    }
 
     public UserPrincipal(String email, String password, Long id, Collection<? extends GrantedAuthority> authorities) {
         this.email = email;

@@ -3,10 +3,8 @@ package waterfall.flowfall.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import waterfall.flowfall.model.Board;
 import waterfall.flowfall.model.User;
 import waterfall.flowfall.service.BoardService;
 import waterfall.flowfall.service.UserService;
@@ -27,11 +25,13 @@ public class CollaboratorController {
         this.userService = userService;
     }
 
+    @PreAuthorize("@access.require('BOARD', 'READ', #boardId)")
     @GetMapping(value = "")
     public ResponseEntity<Iterable<User>> getCollaboratorsByBoardId(@PathVariable Long boardId) {
         return new ResponseEntity<>(userService.findCollaboratorsByBoardId(boardId), HttpStatus.OK);
     }
 
+    @PreAuthorize("@access.require('BOARD', 'READ', #boardId)")
     @GetMapping(value = "/owner")
     public ResponseEntity<User> getOwnerByBoardId(@PathVariable Long boardId) {
         return this.boardService.findById(boardId)
@@ -39,14 +39,8 @@ public class CollaboratorController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostAuthorize("@userPermissions.isOwner(#collabId)")
-    @GetMapping(value = "/{collabId}")
-    public ResponseEntity<Iterable<Board>> getBoardsByCollaborator(@PathVariable Long collabId) {
-        return new ResponseEntity<>(boardService.findAllCollabBoardsByUserId(collabId), HttpStatus.OK);
-    }
-
-    @PreAuthorize("@boardPermissions.isOwner(#boardId)")
-    @PostMapping(value = "/invite")
+    @PreAuthorize("@access.require('BOARD', 'INVITE', #boardId)")
+    @PostMapping(value = "")
     public ResponseEntity<Void> inviteCollaborator(@PathVariable Long boardId, @RequestParam String collabEmail) {
         return boardService.findById(boardId)
                 .map(board -> {
@@ -67,7 +61,7 @@ public class CollaboratorController {
                 .orElse(new ResponseEntity<Void>(HttpStatus.NOT_FOUND));
     }
 
-    @PreAuthorize("@boardPermissions.isOwner(#boardId)")
+    @PreAuthorize("@access.require('BOARD', 'INVITE', #boardId)")
     @DeleteMapping(value = "/{collabId}")
     public ResponseEntity<Void> deleteCollaborator(@PathVariable Long collabId, @PathVariable Long boardId) {
         return boardService.findById(boardId)

@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
-@RequestMapping(value = "/oauth2")
+@RequestMapping(value = "/api/v1/oauth2")
 public class OAuth2Controller {
 
     @Value("${security.oauth2.redirectUri}")
