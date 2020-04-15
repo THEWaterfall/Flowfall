@@ -36,3 +36,4 @@ security:
 water:
   jwtExpiration: 86400
   jwtSecret: waterApiSecretCode
+  jwtHeaderName: Authorization
