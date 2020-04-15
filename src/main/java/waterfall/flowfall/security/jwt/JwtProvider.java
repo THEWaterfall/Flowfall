@@ -16,6 +16,9 @@ public class JwtProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
 
+    @Value("${water.jwtHeaderName}")
+    public String JWT_HEADER_NAME;
+
     @Value("${water.jwtSecret}")
     private String jwtSecret;
 
@@ -56,6 +59,14 @@ public class JwtProvider {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody().getSubject();
+    }
+
+    public String getJwtFromHeader(String authHeader) {
+        if(authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.replace("Bearer ", "");
+        }
+
+        return null;
     }
 
     private Map<String, Object> generateClaims(UserPrincipal userPrincipal) {

@@ -23,7 +23,7 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
         final StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
         if (accessor != null && Objects.equals(accessor.getCommand(), StompCommand.CONNECT)) {
-            String token = getJwt(accessor);
+            String token = jwtProvider.getJwtFromHeader(accessor.getFirstNativeHeader(jwtProvider.JWT_HEADER_NAME));
 
             if (token == null || !jwtProvider.validateJwtToken(token)) {
                 throw new AccessDeniedException("Cannot connect to websocket with token: '" + token + "'");
@@ -31,15 +31,5 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
         }
 
         return message;
-    }
-
-    private String getJwt(StompHeaderAccessor accessor) {
-        String authHeader = accessor.getFirstNativeHeader("Authorization");
-
-        if(authHeader != null && authHeader.startsWith("Bearer ")) {
-            return authHeader.replace("Bearer ", "");
-        }
-
-        return null;
     }
 }
