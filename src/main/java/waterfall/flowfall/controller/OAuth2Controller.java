@@ -45,9 +45,13 @@ public class OAuth2Controller {
     }
 
     @GetMapping(value="/token")
-    public ResponseEntity oauth2(HttpServletRequest request, @RequestParam(name="code") String code) {
+    public ResponseEntity oauth2(HttpServletRequest request, HttpServletResponse response,
+                                 @RequestParam(name="code") String code) {
         String redirectUri = CookieUtils.getCookie(request, "redirect_uri").get().getValue();
         String provider = CookieUtils.getCookie(request, "provider").get().getValue();
+
+        CookieUtils.deleteCookie(request, response, "redirect_uri");
+        CookieUtils.deleteCookie(request, response, "provider");
 
         JwtResponse jwtResponse = oauth2Facade.authenticate(provider, code);
 

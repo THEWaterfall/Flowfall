@@ -35,15 +35,13 @@ public class OAuth2Facade {
     }
 
     public JwtResponse authenticate(String provider, String code) {
-        HttpEntity<AuthRequest> entity = new HttpEntity<>(new HttpHeaders());
-
         Map map = restTemplate.exchange(OAuth2UrlBuilder.buildTokenUrl(provider, code, oauth2RedirectUri),
-                HttpMethod.POST, entity, Map.class).getBody();
+                HttpMethod.POST, null, Map.class).getBody();
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(provider,
                 restTemplate
                     .exchange(
                         OAuth2UrlBuilder.buildUserInfoUrl(provider, map.get("access_token").toString()),
-                        HttpMethod.GET, entity, Map.class)
+                        HttpMethod.GET, null, Map.class)
                     .getBody()
         );
 
