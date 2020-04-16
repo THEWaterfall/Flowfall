@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import waterfall.flowfall.model.Board;
 import waterfall.flowfall.model.User;
+import waterfall.flowfall.model.enums.RoleType;
 import waterfall.flowfall.service.BoardService;
+import waterfall.flowfall.service.UserRoleService;
 import waterfall.flowfall.service.UserService;
 
 import java.util.stream.Collectors;
@@ -18,11 +21,13 @@ public class CollaboratorController {
 
     private BoardService boardService;
     private UserService userService;
+    private UserRoleService userRoleService;
 
     @Autowired
-    public CollaboratorController(BoardService boardService, UserService userService) {
+    public CollaboratorController(BoardService boardService, UserService userService, UserRoleService userRoleService) {
         this.boardService = boardService;
         this.userService = userService;
+        this.userRoleService = userRoleService;
     }
 
     @PreAuthorize("@access.require('BOARD', 'READ', #boardId)")
@@ -54,7 +59,8 @@ public class CollaboratorController {
                     }
 
                     board.addCollaborator(user);
-                    boardService.update(board);
+                    Board updatedBoard = boardService.update(board);
+                    userRoleService.addRole(updatedBoard.getId(), user.getId(), RoleType.BOARD_COLLABORATOR);
 
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 })
@@ -70,7 +76,10 @@ public class CollaboratorController {
                             .filter(collab -> !collab.getId().equals(collabId))
                             .collect(Collectors.toSet())
                     );
-                    boardService.update(board);
+
+                    Board updatedBoard = boardService.update(board);
+                    userRoleService.deleteRole(updatedBoard.getId(), collabId);
+
                     return new ResponseEntity<Void>(HttpStatus.OK);
                 })
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

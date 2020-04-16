@@ -12,7 +12,7 @@ public class RolePermission implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="role_id")
-    private GlobalRole role;
+    private Role role;
 
     @ManyToOne
     @JoinColumn(name="secured_entity_id")
@@ -30,11 +30,11 @@ public class RolePermission implements Serializable {
         this.id = id;
     }
 
-    public GlobalRole getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(GlobalRole role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

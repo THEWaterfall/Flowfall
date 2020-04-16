@@ -17,12 +17,12 @@ public class UserRole implements Serializable {
     @JoinColumn(name="user_id")
     private User user;
 
+    @JoinColumn(name="entity_id")
+    private Long entityId;
+
     @ManyToOne
     @JoinColumn(name="role_id")
     private Role role;
-
-    @JoinColumn(name="entity_id")
-    private Long entityId;
 
     public Long getId() {
         return id;

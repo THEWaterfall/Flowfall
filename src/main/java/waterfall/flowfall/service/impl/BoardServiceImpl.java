@@ -3,8 +3,10 @@ package waterfall.flowfall.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import waterfall.flowfall.model.Board;
+import waterfall.flowfall.model.enums.RoleType;
 import waterfall.flowfall.repository.BoardRepository;
 import waterfall.flowfall.service.BoardService;
+import waterfall.flowfall.service.UserRoleService;
 
 import java.util.Optional;
 
@@ -12,10 +14,12 @@ import java.util.Optional;
 public class BoardServiceImpl implements BoardService {
 
     private BoardRepository boardRepository;
+    private UserRoleService userRoleService;
 
     @Autowired
-    public BoardServiceImpl(BoardRepository boardRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository, UserRoleService userRoleService) {
         this.boardRepository = boardRepository;
+        this.userRoleService = userRoleService;
     }
 
     @Override
@@ -30,6 +34,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board save(Board board) {
+        userRoleService.addRole(board.getId(), board.getUser().getId(), RoleType.BOARD_OWNER);
         return boardRepository.save(board);
     }
 
@@ -48,6 +53,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void delete(Board board) {
+        userRoleService.deleteRole(board.getId());
         boardRepository.delete(board);
     }
 
