@@ -11,6 +11,7 @@ import waterfall.flowfall.service.UserService;
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
 @PreAuthorize("@access.isAdmin()")
+@RequestMapping(value = "/api/v1/users/")
 public class UserController {
 
     private UserService userService;
@@ -20,29 +21,29 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping(value = "")
     public ResponseEntity getUsers() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/users/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.findById(id)
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping(value = "/users")
+    @PostMapping(value = "")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/users")
+    @PutMapping(value = "")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/users/{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> removeUser(@PathVariable Long id) {
         return userService.findById(id)
                 .map(user -> {
