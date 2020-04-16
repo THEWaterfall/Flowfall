@@ -16,7 +16,7 @@ spring:
 
 security:
   oauth2:
-    redirectUri: http://localhost:8080/oauth2/token
+    redirectUri: http://localhost:8080/api/v1/oauth2/token
     client:
       google:
         codeEndpoint: https://accounts.google.com/o/oauth2/auth
