@@ -1,6 +1,6 @@
 package waterfall.flowfall.model.enums;
 
-public enum Permission {
+public enum PermissionType {
     READ("READ"),
     CREATE("CREATE"),
     UPDATE("UPDATE"),
@@ -9,7 +9,7 @@ public enum Permission {
 
     private String permission;
 
-    Permission(String permission) {
+    PermissionType(String permission) {
         this.permission = permission;
     }
 

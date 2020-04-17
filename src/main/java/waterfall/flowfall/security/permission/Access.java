@@ -2,8 +2,8 @@ package waterfall.flowfall.security.permission;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import waterfall.flowfall.model.enums.Entity;
-import waterfall.flowfall.model.enums.Permission;
+import waterfall.flowfall.model.enums.EntityType;
+import waterfall.flowfall.model.enums.PermissionType;
 import waterfall.flowfall.model.enums.UserGlobalRole;
 import waterfall.flowfall.model.User;
 import waterfall.flowfall.repository.RolePermissionRepository;
@@ -27,20 +27,20 @@ public class Access {
      * the permissions to CREATE, READ, UPDATE, DELETE such entities as BOARD, COLUMN, ROW, MESSAGE <b>that are
      * related to the specific board</b>.
      *
-     * @param entity Entity - the entity that is checked if a user has a permission to operate it
-     * @param permission Permission - the permission that is checked if user has got such
+     * @param entityType Entity - the entity that is checked if a user has a permission to operate it
+     * @param permissionType Permission - the permission that is checked if user has got such
      * @param boardId Long - the id of the board the is used to check if a user has a permission to operate
      *               the related to the board entities
      * @return boolean - true if a user is allowed to operate an entity, otherwise false
      */
-    public boolean require(Entity entity, Permission permission, Long boardId) {
+    public boolean require(EntityType entityType, PermissionType permissionType, Long boardId) {
         if (isAdmin()) {
             return true;
         }
 
         User user = SecurityContextUtils.getAuthenticatedUser();
 
-        return rolePermissionRepository.hasAccess(user.getId(), boardId, entity, permission);
+        return rolePermissionRepository.hasAccess(user.getId(), boardId, entityType, permissionType);
     }
 
     public boolean isAdmin() {

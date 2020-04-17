@@ -1,6 +1,6 @@
 package waterfall.flowfall.model.enums;
 
-public enum Entity {
+public enum EntityType {
     BOARD("BOARD"),
     COLUMN("COLUMN"),
     ROW("ROW"),
@@ -8,7 +8,7 @@ public enum Entity {
 
     private String entity;
 
-    Entity(String entity) {
+    EntityType(String entity) {
         this.entity = entity;
     }
 

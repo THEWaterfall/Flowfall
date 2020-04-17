@@ -1,5 +1,7 @@
 package waterfall.flowfall.model;
 
+import waterfall.flowfall.model.enums.UserGlobalRole;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,14 +11,15 @@ public class GlobalRole {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="name")
-    private String name;
+    private UserGlobalRole name;
 
     public GlobalRole() {
 
     }
 
-    public GlobalRole(String name) {
+    public GlobalRole(UserGlobalRole name) {
         this.name = name;
     }
 
@@ -28,11 +31,11 @@ public class GlobalRole {
         this.id = id;
     }
 
-    public String getName() {
+    public UserGlobalRole getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(UserGlobalRole name) {
         this.name = name;
     }
 

@@ -1,5 +1,7 @@
 package waterfall.flowfall.model;
 
+import waterfall.flowfall.model.enums.PermissionType;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,8 +11,9 @@ public class Permission {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="name")
-    private String name;
+    private PermissionType name;
 
     public Long getId() {
         return id;
@@ -20,11 +23,11 @@ public class Permission {
         this.id = id;
     }
 
-    public String getName() {
+    public PermissionType getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(PermissionType name) {
         this.name = name;
     }
 }

@@ -61,7 +61,7 @@ public class AuthFacade {
         user.setProvider(AuthProvider.valueOf(provider.toUpperCase()));
         user.setEmail(userInfo.getEmail());
         user.setProfile(new UserProfile(userInfo.getName()));
-        user.setGlobalRoles(Arrays.asList(new GlobalRole(UserGlobalRole.USER.getLiteral())));
+        user.setGlobalRoles(Arrays.asList(new GlobalRole(UserGlobalRole.USER)));
 
         return authenticate(userService.save(user));
     }

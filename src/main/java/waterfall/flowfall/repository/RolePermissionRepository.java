@@ -2,8 +2,8 @@ package waterfall.flowfall.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import waterfall.flowfall.model.enums.Entity;
-import waterfall.flowfall.model.enums.Permission;
+import waterfall.flowfall.model.enums.EntityType;
+import waterfall.flowfall.model.enums.PermissionType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -15,7 +15,7 @@ public class RolePermissionRepository {
     @Autowired
     private EntityManager entityManager;
 
-    public boolean hasAccess(long userId, long entityId, Entity entity, Permission permission) {
+    public boolean hasAccess(long userId, long entityId, EntityType entityType, PermissionType permissionType) {
         Query query = entityManager.createNativeQuery(
                 "SELECT count(*) FROM role_permission" +
                         " JOIN user_role on role_permission.role_id = user_role.role_id" +
@@ -30,9 +30,8 @@ public class RolePermissionRepository {
 
         query.setParameter("userId", userId);
         query.setParameter("entityId", entityId);
-        query.setParameter("entity", entity.getLiteral());
-        query.setParameter("permission", permission.getLiteral());
-
+        query.setParameter("entity", entityType.getLiteral());
+        query.setParameter("permission", permissionType.getLiteral());
 
         return !((BigInteger) query.getSingleResult()).equals(BigInteger.ZERO);
     }
