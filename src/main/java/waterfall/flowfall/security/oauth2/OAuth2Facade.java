@@ -2,12 +2,9 @@ package waterfall.flowfall.security.oauth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import waterfall.flowfall.controller.AuthRequest;
 import waterfall.flowfall.model.User;
 import waterfall.flowfall.security.AuthFacade;
 import waterfall.flowfall.security.jwt.JwtResponse;
