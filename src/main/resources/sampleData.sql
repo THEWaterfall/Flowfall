@@ -58,8 +58,9 @@ insert into role_permission(role_id, permission_id, secured_entity_id) values (1
 
 ####
 
-# ROLE: B.COLLABORATOR - BOARD - READ, INVITE
+# ROLE: B.COLLABORATOR - BOARD - READ, UPDATE, INVITE
 insert into role_permission(role_id, permission_id, secured_entity_id) values (2, 1, 1);
+insert into role_permission(role_id, permission_id, secured_entity_id) values (2, 3, 1);
 insert into role_permission(role_id, permission_id, secured_entity_id) values (2, 5, 1);
 
 # ROLE: B.COLLABORATOR - COLUMN - READ, CREATE, UPDATE, DELETE
