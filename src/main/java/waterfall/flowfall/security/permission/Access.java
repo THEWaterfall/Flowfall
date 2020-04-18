@@ -23,24 +23,24 @@ public class Access {
      * Checks if the authenticated user has the specified permission to operate the specified entity
      * using the id of the board. <br/>
      * <br/>
-     * For instance, if a user has the B.ONWER role on the specific board then that means that the user has
+     * For instance, if a user has the B.OWNER role on the specific board then that means that the user has
      * the permissions to CREATE, READ, UPDATE, DELETE such entities as BOARD, COLUMN, ROW, MESSAGE <b>that are
      * related to the specific board</b>.
      *
      * @param entityType Entity - the entity that is checked if a user has a permission to operate it
      * @param permissionType Permission - the permission that is checked if user has got such
-     * @param boardId Long - the id of the board the is used to check if a user has a permission to operate
-     *               the related to the board entities
+     * @param entityId Long - the id of the entity the is used to check if a user has a permission to operate
+     *               the related to the entity entities
      * @return boolean - true if a user is allowed to operate an entity, otherwise false
      */
-    public boolean require(EntityType entityType, PermissionType permissionType, Long boardId) {
+    public boolean require(EntityType entityType, PermissionType permissionType, Long entityId) {
         if (isAdmin()) {
             return true;
         }
 
         User user = SecurityContextUtils.getAuthenticatedUser();
 
-        return rolePermissionRepository.hasAccess(user.getId(), boardId, entityType, permissionType);
+        return rolePermissionRepository.hasAccess(user.getId(), entityId, entityType, permissionType);
     }
 
     public boolean isAdmin() {

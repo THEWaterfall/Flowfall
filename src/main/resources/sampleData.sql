@@ -1,8 +1,8 @@
 insert into global_role(name) values ('ADMIN');
 insert into global_role(name) values ('USER');
 
-insert into role(name) values ('B.OWNER');
-insert into role(name) values ('B.COLLABORATOR');
+insert into role(name) values ('BOARD_OWNER');
+insert into role(name) values ('BOARD_COLLABORATOR');
 
 insert into user_profile(firstname, lastname) values('Andrew', 'Waterfall');
 
