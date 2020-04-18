@@ -34,8 +34,9 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board save(Board board) {
-        userRoleService.addRole(board.getId(), board.getUser().getId(), RoleType.BOARD_OWNER);
-        return boardRepository.save(board);
+        Board savedBoard = boardRepository.save(board);
+        userRoleService.addRole(savedBoard.getId(), board.getUser().getId(), RoleType.BOARD_OWNER);
+        return savedBoard;
     }
 
     @Override
