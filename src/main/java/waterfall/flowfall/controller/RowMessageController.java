@@ -10,7 +10,7 @@ import waterfall.flowfall.service.RowMessageService;
 
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
-@RequestMapping("/api/v1/boards/{boardId}/columns/{colId}/rows/{rowId}/rowMessages")
+@RequestMapping("/api/v1/boards/{boardId}/columns/{colId}/rows/{rowId}/messages")
 public class RowMessageController {
 
     private RowMessageService rowMessageService;
