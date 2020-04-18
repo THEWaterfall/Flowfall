@@ -6,13 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 import waterfall.flowfall.model.Role;
 import waterfall.flowfall.model.enums.RoleType;
 import waterfall.flowfall.repository.RoleRepository;
+import waterfall.flowfall.repository.UserRoleRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 @Repository
 @Transactional
-public class UserRoleRepositoryImpl {
+public class UserRoleRepositoryImpl implements UserRoleRepository {
     private EntityManager entityManager;
     private RoleRepository roleRepository;
 
