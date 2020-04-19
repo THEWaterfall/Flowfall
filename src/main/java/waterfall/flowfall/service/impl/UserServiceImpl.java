@@ -1,5 +1,6 @@
 package waterfall.flowfall.service.impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import waterfall.flowfall.model.User;
@@ -44,7 +45,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User update(User user) {
+        return userRepository.findById(user.getId())
+                .map(savedUser -> {
+                    BeanUtils.copyProperties(user, savedUser, "id");
+                    return userRepository.save(savedUser);
+                })
+                .orElse(null);
+    }
+
+    @Override
     public void delete(User user) {
         userRepository.delete(user);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
