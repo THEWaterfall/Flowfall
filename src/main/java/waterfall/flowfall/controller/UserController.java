@@ -40,7 +40,7 @@ public class UserController {
 
     @PutMapping(value = "")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        return new ResponseEntity<>(userService.save(user), HttpStatus.OK);
+        return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
