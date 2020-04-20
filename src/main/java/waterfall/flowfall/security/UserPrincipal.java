@@ -74,7 +74,7 @@ public class UserPrincipal implements UserDetails {
         return true;
     }
 
-    private static List<GrantedAuthority> parseAuthorities(List<GlobalRole> globalRoles) {
+    public static List<GrantedAuthority> parseAuthorities(List<GlobalRole> globalRoles) {
         return globalRoles.stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toList());

@@ -46,7 +46,7 @@ public class Access {
     public boolean isAdmin() {
         User user = SecurityContextUtils.getAuthenticatedUser();
         return user.getGlobalRoles().stream()
-                .anyMatch(globalRole -> globalRole.getName().equals(UserGlobalRole.ADMIN.getLiteral()));
+                .anyMatch(globalRole -> globalRole.getName().equals(UserGlobalRole.ADMIN));
     }
 
 }

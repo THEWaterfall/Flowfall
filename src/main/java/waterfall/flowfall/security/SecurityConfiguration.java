@@ -2,6 +2,7 @@ package waterfall.flowfall.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +16,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import waterfall.flowfall.error.filter.ExceptionHandlerFilter;
 import waterfall.flowfall.security.jwt.JwtAuthFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,6 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Value("${security.allowedApis}")
+    private List<String> allowedApis;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider());
@@ -36,12 +43,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
-                .antMatchers("/api/v1/auth/**", "/api/v1/oauth2/**", "/api/v1/webSocket/**").permitAll()
+                .antMatchers(allowedApis.toArray(new String[0])).permitAll()
                 .anyRequest().authenticated()
              .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(exceptionHandlerFilter(), JwtAuthFilter.class);
     }
 
     @Bean
@@ -53,6 +61,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtAuthFilter authFilter() {
         return new JwtAuthFilter();
+    }
+
+    @Bean
+    public ExceptionHandlerFilter exceptionHandlerFilter() {
+        return new ExceptionHandlerFilter();
     }
 
     @Bean

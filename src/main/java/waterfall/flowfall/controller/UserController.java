@@ -11,7 +11,7 @@ import waterfall.flowfall.service.UserService;
 @RestController
 @CrossOrigin(value="*", maxAge = 3600)
 @PreAuthorize("@access.isAdmin()")
-@RequestMapping(value = "/api/v1/users/")
+@RequestMapping(value = "/api/v1/users")
 public class UserController {
 
     private UserService userService;

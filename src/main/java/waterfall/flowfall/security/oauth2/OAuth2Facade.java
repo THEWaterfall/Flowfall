@@ -50,7 +50,7 @@ public class OAuth2Facade {
         Optional<User> optionalUser = userService.findByEmail(userInfo.getEmail());
 
         if (optionalUser.isPresent()) {
-            return authFacade.authenticate(optionalUser.get());
+            return authFacade.authenticateAndGetToken(optionalUser.get());
         } else {
             return register(provider, userInfo);
         }
@@ -64,6 +64,6 @@ public class OAuth2Facade {
         user.setGlobalRoles(Arrays.asList(new GlobalRole(UserGlobalRole.USER)));
         user.setVerified(true);
 
-        return authFacade.authenticate(userService.save(user));
+        return authFacade.authenticateAndGetToken(userService.save(user));
     }
 }
