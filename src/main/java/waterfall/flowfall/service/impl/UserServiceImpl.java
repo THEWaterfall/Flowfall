@@ -2,6 +2,7 @@ package waterfall.flowfall.service.impl;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import waterfall.flowfall.model.User;
 import waterfall.flowfall.repository.UserRepository;
@@ -13,10 +14,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private BCryptPasswordEncoder bcrypt;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bcrypt) {
         this.userRepository = userRepository;
+        this.bcrypt = bcrypt;
     }
 
     @Override
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
+        user.setPassword(bcrypt.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

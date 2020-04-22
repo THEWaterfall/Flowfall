@@ -15,6 +15,7 @@ import waterfall.flowfall.model.User;
 import waterfall.flowfall.model.UserProfile;
 import waterfall.flowfall.model.VerificationToken;
 import waterfall.flowfall.model.enums.UserGlobalRole;
+import waterfall.flowfall.model.requests.LoginRequest;
 import waterfall.flowfall.model.requests.RegisterRequest;
 import waterfall.flowfall.security.jwt.JwtProvider;
 import waterfall.flowfall.security.jwt.JwtResponse;
@@ -59,26 +60,30 @@ public class AuthFacade {
         this.verificationTokenService = verificationTokenService;
     }
 
-    public JwtResponse authenticateAndGetToken(User user) {
-        authenticate(user);
+    public JwtResponse authenticateAndGetToken(LoginRequest loginRequest) throws AccessDeniedException {
+        return userService.findByEmail(loginRequest.getEmail())
+            .map(user -> {
+                authenticate(loginRequest);
+                String jwt = jwtProvider.generateJwtToken(user);
 
-        UserPrincipal userDetails = (UserPrincipal) userDetailsService.loadUserByUsername(user.getEmail());
-        String jwt = jwtProvider.generateJwtToken(userDetails);
-
-        return new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+                return new JwtResponse(jwt, user.getEmail(), user.isVerified());
+            })
+            .orElseThrow(() -> new AccessDeniedException("No user with email " + loginRequest.getEmail()));
     }
 
+    public JwtResponse authenticateAndGetToken(User user) {
+        authenticate(user);
+        String jwt = jwtProvider.generateJwtToken(user);
+
+        return new JwtResponse(jwt, user.getEmail(), user.isVerified());
+    }
+
+    public Authentication authenticate(LoginRequest loginRequest) {
+        return authenticateWithCredentials(loginRequest.getEmail(), loginRequest.getPassword());
+    }
 
     public Authentication authenticate(User user) {
-        Authentication authentication = null;
-
-        if (user.getProvider() == null || user.getProvider().equals(AuthProvider.LOCAL)) {
-            authentication = authenticateWithCredentials(user.getEmail(), user.getPassword());
-        } else {
-            authentication = authenticationWithoutCredentials(user.getEmail());
-        }
-
-        return authentication;
+        return authenticationWithoutCredentials(user.getEmail());
     }
 
     public Authentication authenticate(String email) throws AccessDeniedException {

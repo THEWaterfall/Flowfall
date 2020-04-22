@@ -7,12 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import waterfall.flowfall.model.User;
+import waterfall.flowfall.model.requests.LoginRequest;
 import waterfall.flowfall.model.requests.RegisterRequest;
 import waterfall.flowfall.security.AuthFacade;
 import waterfall.flowfall.security.AuthProvider;
 import waterfall.flowfall.security.jwt.JwtResponse;
 
 import javax.validation.Valid;
+
+import java.nio.file.AccessDeniedException;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -29,8 +32,8 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody User user) {
-        return ok(authFacade.authenticateAndGetToken(user));
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest) throws AccessDeniedException {
+        return ok(authFacade.authenticateAndGetToken(loginRequest));
     }
 
     @PostMapping(value = "/register")

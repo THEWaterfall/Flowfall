@@ -1,20 +1,24 @@
 package waterfall.flowfall.security.jwt;
 
-import org.springframework.security.core.GrantedAuthority;
-
-import java.util.Collection;
-
 public class JwtResponse {
     private String type = "Bearer";
 
     private String accessToken;
     private String email;
-    private Collection<? extends GrantedAuthority> authorities;
+    private boolean enabled;
 
-    public JwtResponse(String accessToken, String email, Collection<? extends GrantedAuthority> authorities) {
+    public JwtResponse(String accessToken, String email, boolean enabled) {
         this.accessToken = accessToken;
         this.email = email;
-        this.authorities = authorities;
+        this.enabled = enabled;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getAccessToken() {
@@ -33,11 +37,11 @@ public class JwtResponse {
         this.email = email;
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        this.authorities = authorities;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
