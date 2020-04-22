@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import waterfall.flowfall.security.UserPrincipal;
+import waterfall.flowfall.model.User;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -25,10 +25,10 @@ public class JwtProvider {
     @Value("${water.jwtExpiration}")
     private int jwtExpiration;
 
-    public String generateJwtToken(UserPrincipal userPrincipal) {
+    public String generateJwtToken(User user) {
         return Jwts.builder()
-                .setClaims(generateClaims(userPrincipal))
-                .setSubject(userPrincipal.getUsername())
+                .setClaims(generateClaims(user))
+                .setSubject(user.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -69,9 +69,9 @@ public class JwtProvider {
         return null;
     }
 
-    private Map<String, Object> generateClaims(UserPrincipal userPrincipal) {
+    private Map<String, Object> generateClaims(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", String.valueOf(userPrincipal.getId()));
+        claims.put("id", String.valueOf(user.getId()));
 
         return claims;
     }
