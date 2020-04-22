@@ -3,6 +3,7 @@ package waterfall.flowfall.error;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,13 +13,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import waterfall.flowfall.model.dto.ErrorDto;
 import waterfall.flowfall.model.dto.ErrorResponseDto;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
@@ -37,6 +35,14 @@ public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
                 new ErrorResponseDto(ex.getLocalizedMessage(), BAD_REQUEST.getReasonPhrase(), BAD_REQUEST.value(), errors);
 
         return new ResponseEntity<>(errorResponse, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        ErrorResponseDto errorResponse
+                = new ErrorResponseDto(ex.getMessage(), FORBIDDEN.getReasonPhrase(), FORBIDDEN.value());
+
+        return new ResponseEntity<>(errorResponse, FORBIDDEN);
     }
 
     @ExceptionHandler(value = Exception.class)
