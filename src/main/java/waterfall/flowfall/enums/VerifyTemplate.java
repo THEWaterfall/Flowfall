@@ -2,7 +2,7 @@ package waterfall.flowfall.enums;
 
 public enum VerifyTemplate {
     URL("url"),
-    FULLNAME("fullname"),
+    NAME("name"),
     TOKEN("token"),
     REDIRECT_URI("redirectUri");
 

@@ -37,6 +37,7 @@ public class AuthFacade {
     private JwtProvider jwtProvider;
     private UserService userService;
     private VerificationTokenService verificationTokenService;
+    private EmailUtils emailUtils;
 
     @Qualifier("customUserDetailsService")
     @Autowired
@@ -53,11 +54,12 @@ public class AuthFacade {
 
     @Autowired
     public AuthFacade(JwtProvider jwtProvider, UserService userService, AuthenticationManager authenticationManager,
-                      VerificationTokenService verificationTokenService) {
+                      VerificationTokenService verificationTokenService, EmailUtils emailUtils) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
         this.userService = userService;
         this.verificationTokenService = verificationTokenService;
+        this.emailUtils = emailUtils;
     }
 
     public JwtResponse authenticateAndGetToken(LoginRequest loginRequest) throws AccessDeniedException {
@@ -139,12 +141,12 @@ public class AuthFacade {
 
         Map<String, String> valuesToBind = new HashMap<>();
         valuesToBind.put(URL.getLiteral(), apiUrl + "/auth/register/verify");
-        valuesToBind.put(FULLNAME.getLiteral(), user.getProfile().getFullname());
+        valuesToBind.put(NAME.getLiteral(), user.getProfile().getFullname());
         valuesToBind.put(TOKEN.getLiteral(), verificationToken.getToken());
         valuesToBind.put(REDIRECT_URI.getLiteral(), redirectUri);
 
-        EmailUtils.send(user.getEmail(), supportEmail, "Verification",
-                EmailUtils.renderTemplate(Template.VERIFY, valuesToBind));
+        emailUtils.send(user.getEmail(), supportEmail, "Verification",
+                emailUtils.renderTemplate(Template.VERIFY, valuesToBind));
     }
 
     private Authentication authenticateWithCredentials(String email, String password) {

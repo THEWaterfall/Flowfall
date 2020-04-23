@@ -11,6 +11,7 @@ import waterfall.flowfall.model.requests.LoginRequest;
 import waterfall.flowfall.model.requests.RegisterRequest;
 import waterfall.flowfall.security.AuthFacade;
 import waterfall.flowfall.security.AuthProvider;
+import waterfall.flowfall.security.AuthUrlBuilder;
 import waterfall.flowfall.security.jwt.JwtResponse;
 
 import javax.validation.Valid;
@@ -46,12 +47,10 @@ public class AuthController {
     public ResponseEntity verify(@RequestParam String token, @RequestParam String redirectUri) {
         return authFacade.verify(token)
                 .map(user -> {
-                    String redirectTo = UriComponentsBuilder.fromHttpUrl(redirectUri)
-                            .queryParam("response", authFacade.authenticateAndGetToken(user))
-                            .build().toString();
+                    JwtResponse jwtResponse = authFacade.authenticateAndGetToken(user);
 
-                     return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                                .header(HttpHeaders.LOCATION, redirectTo)
+                    return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+                                .header(HttpHeaders.LOCATION, AuthUrlBuilder.buildSuccessResponseUrl(jwtResponse, redirectUri))
                                 .build();
                 })
                 .orElse(ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)

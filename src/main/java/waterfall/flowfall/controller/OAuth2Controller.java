@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import waterfall.flowfall.security.AuthFacade;
 import waterfall.flowfall.security.jwt.JwtResponse;
 import waterfall.flowfall.security.oauth2.OAuth2Facade;
-import waterfall.flowfall.security.oauth2.OAuth2UrlBuilder;
+import waterfall.flowfall.security.AuthUrlBuilder;
 import waterfall.flowfall.util.CookieUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +40,7 @@ public class OAuth2Controller {
         authFacade.verifyProvider(provider);
 
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .header(HttpHeaders.LOCATION, OAuth2UrlBuilder.buildCodeUrl(provider, oauth2RedirectUri))
+                .header(HttpHeaders.LOCATION, AuthUrlBuilder.buildCodeUrl(provider, oauth2RedirectUri))
                 .build();
     }
 
@@ -56,7 +56,7 @@ public class OAuth2Controller {
         JwtResponse jwtResponse = oauth2Facade.authenticate(provider, code);
 
         return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .header(HttpHeaders.LOCATION, OAuth2UrlBuilder.buildSuccessResponseUrl(jwtResponse, redirectUri))
+                .header(HttpHeaders.LOCATION, AuthUrlBuilder.buildSuccessResponseUrl(jwtResponse, redirectUri))
                 .build();
     }
 }

@@ -11,6 +11,7 @@ import waterfall.flowfall.model.UserProfile;
 import waterfall.flowfall.model.enums.UserGlobalRole;
 import waterfall.flowfall.security.AuthFacade;
 import waterfall.flowfall.security.AuthProvider;
+import waterfall.flowfall.security.AuthUrlBuilder;
 import waterfall.flowfall.security.jwt.JwtResponse;
 import waterfall.flowfall.security.oauth2.userinfo.OAuth2UserInfo;
 import waterfall.flowfall.service.UserService;
@@ -37,12 +38,12 @@ public class OAuth2Facade {
     }
 
     public JwtResponse authenticate(String provider, String code) {
-        Map map = restTemplate.exchange(OAuth2UrlBuilder.buildTokenUrl(provider, code, oauth2RedirectUri),
+        Map map = restTemplate.exchange(AuthUrlBuilder.buildTokenUrl(provider, code, oauth2RedirectUri),
                 HttpMethod.POST, null, Map.class).getBody();
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(provider,
                 restTemplate
                     .exchange(
-                        OAuth2UrlBuilder.buildUserInfoUrl(provider, map.get("access_token").toString()),
+                        AuthUrlBuilder.buildUserInfoUrl(provider, map.get("access_token").toString()),
                         HttpMethod.GET, null, Map.class)
                     .getBody()
         );

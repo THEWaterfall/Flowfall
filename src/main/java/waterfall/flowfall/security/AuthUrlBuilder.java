@@ -1,4 +1,4 @@
-package waterfall.flowfall.security.oauth2;
+package waterfall.flowfall.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,12 +10,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Base64;
 
 @Component
-public class OAuth2UrlBuilder {
+public class AuthUrlBuilder {
 
     private static Environment env;
 
     @Autowired
-    public OAuth2UrlBuilder(Environment env) {
+    public AuthUrlBuilder(Environment env) {
         this.env = env;
     }
 
