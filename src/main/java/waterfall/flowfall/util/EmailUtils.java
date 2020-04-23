@@ -3,11 +3,11 @@ package waterfall.flowfall.util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.stringtemplate.v4.ST;
 import waterfall.flowfall.enums.Template;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -17,17 +17,15 @@ import java.util.Map;
 @Component
 public class EmailUtils {
 
-    private static JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
     @Autowired
-    private JavaMailSender autowiredJavaMailSender;
-
-    @PostConstruct
-    private void init() {
-        javaMailSender = this.autowiredJavaMailSender;
+    public EmailUtils(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
     }
 
-    public static void send(String to, String from, String subject, String message) {
+    @Async
+    public void send(String to, String from, String subject, String message) {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(to);
         msg.setFrom(from);
@@ -37,7 +35,7 @@ public class EmailUtils {
         javaMailSender.send(msg);
     }
 
-    public static String renderTemplate(Template templateName, Map<String, String> valuesToBind) {
+    public String renderTemplate(Template templateName, Map<String, String> valuesToBind) {
         ST stringTemplate = new ST(getTemplate(templateName.getLiteral()), '$', '$');
         valuesToBind.forEach(stringTemplate::add);
 
