@@ -104,23 +104,22 @@ public class AuthFacade {
         sendVerificationToken(userService.save(user), registerRequest.getRedirectUri());
     }
 
-    public boolean verify(String token) {
+    public Optional<User> verify(String token) {
         return verificationTokenService.findByToken(token)
                 .map(foundToken -> {
                     verificationTokenService.delete(foundToken);
 
                     boolean isExpired = foundToken.getExpirationDate().before(new Date());
                     if (isExpired) {
-                        return false;
+                        return Optional.<User>empty();
                     }
 
                     User user = foundToken.getUser();
                     user.setVerified(true);
-                    userService.update(user);
 
-                    return true;
+                    return Optional.of(userService.update(user));
                 })
-                .orElse(false);
+                .orElse(Optional.empty());
     }
 
     public boolean verifyProvider(String provider) {

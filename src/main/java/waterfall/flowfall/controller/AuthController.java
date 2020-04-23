@@ -44,13 +44,18 @@ public class AuthController {
 
     @GetMapping(value = "/register/verify")
     public ResponseEntity verify(@RequestParam String token, @RequestParam String redirectUri) {
-        String redirectTo = UriComponentsBuilder.fromHttpUrl(redirectUri)
-                .queryParam("verified", authFacade.verify(token))
-                .build().toString();
+        return authFacade.verify(token)
+                .map(user -> {
+                    String redirectTo = UriComponentsBuilder.fromHttpUrl(redirectUri)
+                            .queryParam("response", authFacade.authenticateAndGetToken(user))
+                            .build().toString();
 
-
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .header(HttpHeaders.LOCATION, redirectTo)
-                .build();
+                     return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+                                .header(HttpHeaders.LOCATION, redirectTo)
+                                .build();
+                })
+                .orElse(ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
+                            .header(HttpHeaders.LOCATION, redirectUri)
+                            .build());
     }
 }
