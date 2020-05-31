@@ -7,8 +7,10 @@ insert into role(name) values ('BOARD_COLLABORATOR');
 insert into user_profile(firstname, lastname) values('Andrew', 'Waterfall');
 
 # Password: password
-insert into user(email, password, provider, user_profile_id) values('admin@admin.com', '$2a$10$gGuR8iONHEnagJboVVUSyeDM6c5YtvGmxKd4sqvOQrguahKrQK/FK', 'LOCAL', 1);
-insert into user(email, password, provider) values('user@user.com', '$2a$10$gGuR8iONHEnagJboVVUSyeDM6c5YtvGmxKd4sqvOQrguahKrQK/FK', 'LOCAL');
+insert into user(email, password, provider, user_profile_id, verified)
+values ('admin@admin.com', '$2a$10$gGuR8iONHEnagJboVVUSyeDM6c5YtvGmxKd4sqvOQrguahKrQK/FK', 'LOCAL', 1, 1);
+insert into user(email, password, provider, verified)
+values ('user@user.com', '$2a$10$gGuR8iONHEnagJboVVUSyeDM6c5YtvGmxKd4sqvOQrguahKrQK/FK', 'LOCAL', 1);
 
 insert into user_global_role(user_id, global_role_id) values(1, 1);
 insert into user_global_role(user_id, global_role_id) values(2, 2);
@@ -85,5 +87,3 @@ insert into role_permission(role_id, permission_id, secured_entity_id) values (2
 
 insert into user_role(entity_id, user_id, role_id) values (1, 1, 1);
 insert into user_role(entity_id, user_id, role_id) values (1, 2, 2);
-
-

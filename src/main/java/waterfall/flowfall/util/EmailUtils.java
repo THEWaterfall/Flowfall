@@ -1,5 +1,6 @@
 package waterfall.flowfall.util;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -9,9 +10,8 @@ import org.stringtemplate.v4.ST;
 import waterfall.flowfall.enums.Template;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Component
@@ -43,12 +43,9 @@ public class EmailUtils {
     }
 
     private static String getTemplate(String name) {
-        URL templateUrl = EmailUtils.class.getClassLoader().getResource("email-templates/" + name + ".html");
-
+        InputStream template = EmailUtils.class.getClassLoader().getResourceAsStream("email-templates/" + name + ".html");
         try {
-            return new String(
-                    Files.readAllBytes(Paths.get(templateUrl.getPath()))
-            );
+            return IOUtils.toString(template, StandardCharsets.UTF_8.name());
         } catch (IOException e) {
             throw new RuntimeException("Cannot find template file for name: " + name, e);
         }
