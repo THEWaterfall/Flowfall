@@ -8,6 +8,7 @@ import waterfall.flowfall.model.User;
 import waterfall.flowfall.repository.UserRepository;
 import waterfall.flowfall.service.UserService;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,7 +45,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        user.setPassword(bcrypt.encode(user.getPassword()));
+        if (Objects.nonNull(user.getPassword())) {
+            user.setPassword(bcrypt.encode(user.getPassword()));
+        }
+
         return userRepository.save(user);
     }
 
